@@ -32,3 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 /src/main/resources/application-nocturnalsorrow.properties
+/src/main/resources/application-danmalins.properties
