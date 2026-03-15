@@ -1,22 +1,15 @@
 package org.dgroup.userservicesmartlogistics.service;
 
+import org.dgroup.userservicesmartlogistics.dto.UserUpdatePasswordRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.UserUpdatePhoneNumberRequestDTO;
 import org.dgroup.userservicesmartlogistics.model.User;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface UserService {
-    User signUpUser(User user);
+    User updateUserPassword (UUID id, UserUpdatePasswordRequestDTO updatePasswordRequestDTO, Authentication authentication);
 
-    void verifyUser(String token);
-
-    String verifyAndReturnToken(User user);
-
-    //User updateUser(String email, UserUpdateRequestDTO requestDTO, Authentication authentication);
-
-    void deleteUserByEmail(String email, Authentication authentication);
-
-    User getUserByEmail(String email, Authentication authentication);
-
-    List<User> getAllUsers(Authentication authentication);
+    User updateUserPhoneNumber (UUID id, UserUpdatePhoneNumberRequestDTO userUpdatePhoneNumberRequestDTO, Authentication authentication);
 }

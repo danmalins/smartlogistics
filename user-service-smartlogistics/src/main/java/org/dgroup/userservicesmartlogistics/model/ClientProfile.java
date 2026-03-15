@@ -36,5 +36,4 @@ public class ClientProfile {
 
     @Column(nullable = false)
     LocalDateTime createdAt;
-
 }

@@ -1,23 +1,21 @@
 package org.dgroup.userservicesmartlogistics.repository;
 
 import org.dgroup.userservicesmartlogistics.model.ClientProfile;
+import org.dgroup.userservicesmartlogistics.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface ClientProfileRepository extends JpaRepository<ClientProfile,String> {
+public interface ClientProfileRepository extends JpaRepository<ClientProfile, UUID> {
 
-    Optional<ClientProfile> findByCompanyName(String companyName);
+    Optional<ClientProfile> findByUser(User user);
 
-    Optional<ClientProfile> findByCompanyAddress(String companyAddress);
+    Optional<ClientProfile> findByUserEmail(String email);
 
     Optional<ClientProfile> findByTaxNumber(String taxNumber);
-
-    boolean existsByCompanyName(String companyName);
-
-    boolean existsByCompanyAddress(String companyAddress);
 
     boolean existsByTaxNumber(String taxNumber);
 }

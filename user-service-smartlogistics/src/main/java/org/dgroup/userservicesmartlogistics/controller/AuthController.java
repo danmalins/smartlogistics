@@ -1,4 +1,4 @@
 package org.dgroup.userservicesmartlogistics.controller;
 
-public class UserController {
+public class AuthController {
 }
