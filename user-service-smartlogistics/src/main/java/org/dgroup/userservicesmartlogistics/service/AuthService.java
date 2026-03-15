@@ -1,5 +1,9 @@
 package org.dgroup.userservicesmartlogistics.service;
 
+import org.dgroup.userservicesmartlogistics.dto.AuthResponseDTO;
+import org.dgroup.userservicesmartlogistics.dto.LoginRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.RegisterClientRequestDTO;
+
 public interface AuthService {
     void registerClient(RegisterClientRequestDTO request);
 

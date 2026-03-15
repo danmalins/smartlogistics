@@ -1,5 +1,6 @@
 package org.dgroup.userservicesmartlogistics.service;
 
+import org.dgroup.userservicesmartlogistics.dto.UpdateDriverTruckInfoRequestDTO;
 import org.dgroup.userservicesmartlogistics.model.DriverProfile;
 import org.dgroup.userservicesmartlogistics.model.DriverStatus;
 import org.springframework.security.core.Authentication;
@@ -11,7 +12,7 @@ public interface DriverService {
     DriverProfile getDriverProfile(Authentication authentication);
 
     DriverProfile updateTruckInfo(
-            DriverTruckUpdateDTO request,
+            UpdateDriverTruckInfoRequestDTO request,
             Authentication authentication
     );
 
