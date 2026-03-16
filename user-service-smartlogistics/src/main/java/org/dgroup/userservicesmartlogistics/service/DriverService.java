@@ -1,11 +1,9 @@
 package org.dgroup.userservicesmartlogistics.service;
 
-import org.dgroup.userservicesmartlogistics.dto.UpdateDriverTruckInfoRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.request.UpdateDriverTruckInfoRequestDTO;
 import org.dgroup.userservicesmartlogistics.model.DriverProfile;
 import org.dgroup.userservicesmartlogistics.model.DriverStatus;
 import org.springframework.security.core.Authentication;
-
-import java.util.UUID;
 
 public interface DriverService {
 

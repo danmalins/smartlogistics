@@ -1,9 +1,9 @@
-package org.dgroup.userservicesmartlogistics.dto;
+package org.dgroup.userservicesmartlogistics.dto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.dgroup.userservicesmartlogistics.model.UserRole;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -11,7 +11,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserResponseDTO {
+public class ClientProfileResponseDTO {
 
     UUID id;
 
@@ -19,11 +19,12 @@ public class UserResponseDTO {
 
     String firstName;
     String lastName;
-
     String phone;
 
-    UserRole role;
+    String companyName;
+    String companyAddress;
+    String taxNumber;
 
-    boolean enabled;
+    LocalDateTime createdAt;
 
 }

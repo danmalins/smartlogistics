@@ -1,4 +1,4 @@
-package org.dgroup.userservicesmartlogistics.dto;
+package org.dgroup.userservicesmartlogistics.dto.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,21 +8,10 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CreateDriverRequestDTO {
-
-    String email;
-    String password;
-
-    String firstName;
-    String lastName;
-    String phone;
-
-    String driverLicenseNumber;
-
+public class UpdateDriverTruckInfoRequestDTO {
     String truckType;
 
     Double truckCapacityWeight;
 
     Double truckCapacityVolume;
-
 }

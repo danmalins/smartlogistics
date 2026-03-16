@@ -1,4 +1,4 @@
-package org.dgroup.userservicesmartlogistics.dto;
+package org.dgroup.userservicesmartlogistics.dto.auth;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,7 +8,9 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserUpdatePasswordRequestDTO {
-    String oldPassword;
-    String newPassword;
+public class LoginRequestDTO {
+
+    private String email;
+    private String password;
+
 }

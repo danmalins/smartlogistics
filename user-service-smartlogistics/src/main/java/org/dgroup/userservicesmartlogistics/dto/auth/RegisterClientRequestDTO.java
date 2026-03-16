@@ -1,4 +1,4 @@
-package org.dgroup.userservicesmartlogistics.dto;
+package org.dgroup.userservicesmartlogistics.dto.auth;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

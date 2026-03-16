@@ -15,10 +15,6 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     Optional<User> findByRole(UserRole role);
 
-    Optional<User> findByFirstName(String firstname);
-
-    Optional<User> findByLastName(String lastname);
-
     Optional<User> findByFirstNameAndLastName(String firstname, String lastname);
 
     Optional<User> findByPhone(String phoneNumber);

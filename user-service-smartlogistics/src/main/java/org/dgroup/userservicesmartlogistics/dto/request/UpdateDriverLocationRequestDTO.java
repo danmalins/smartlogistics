@@ -1,14 +1,13 @@
-package org.dgroup.userservicesmartlogistics.dto;
-
+package org.dgroup.userservicesmartlogistics.dto.request;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserUpdatePhoneNumberRequestDTO {
-    String phoneNumber;
+public class UpdateDriverLocationRequestDTO {
+    Double latitude;
+    Double longitude;
 }

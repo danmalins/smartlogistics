@@ -1,13 +1,15 @@
-package org.dgroup.userservicesmartlogistics.dto;
+package org.dgroup.userservicesmartlogistics.dto.admin;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.UUID;
+
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UpdateDriverLocationRequestDTO {
-    Double latitude;
-    Double longitude;
+public class BlockUserRequestDTO {
+    UUID userId;
 }

@@ -1,8 +1,7 @@
-package org.dgroup.userservicesmartlogistics.dto;
+package org.dgroup.userservicesmartlogistics.dto.request;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.UUID;
 
 
 @Getter
@@ -10,6 +9,6 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BlockUserRequestDTO {
-    UUID userId;
+public class UserUpdatePhoneNumberRequestDTO {
+    String phoneNumber;
 }
