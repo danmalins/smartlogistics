@@ -7,11 +7,8 @@ import org.dgroup.userservicesmartlogistics.dto.request.UserUpdatePasswordReques
 import org.dgroup.userservicesmartlogistics.dto.request.UserUpdatePhoneNumberRequestDTO;
 import org.dgroup.userservicesmartlogistics.exception.CustomAccessDeniedException;
 import org.dgroup.userservicesmartlogistics.exception.UserNotFoundException;
-import org.dgroup.userservicesmartlogistics.mapper.ClientMapper;
-import org.dgroup.userservicesmartlogistics.mapper.UserMapper;
 import org.dgroup.userservicesmartlogistics.model.User;
 import org.dgroup.userservicesmartlogistics.repository.UserRepository;
-import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
