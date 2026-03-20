@@ -3,6 +3,7 @@ package org.dgroup.userservicesmartlogistics.handler;
 import org.dgroup.userservicesmartlogistics.dto.error.ApiError;
 import org.dgroup.userservicesmartlogistics.exception.ClientNotFoundException;
 import org.dgroup.userservicesmartlogistics.exception.CustomAccessDeniedException;
+import org.dgroup.userservicesmartlogistics.exception.DriverNotFoundException;
 import org.dgroup.userservicesmartlogistics.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ClientNotFoundException.class)
     public ResponseEntity<ApiError> handleClientNotFound(ClientNotFoundException ex) {
         ApiError error = new ApiError(HttpStatus.NOT_FOUND, "Client not found", ex.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    // 404 Not Found
+    @ExceptionHandler(DriverNotFoundException.class)
+    public ResponseEntity<ApiError> handleDriverNotFound(DriverNotFoundException ex) {
+        ApiError error = new ApiError(HttpStatus.NOT_FOUND, "Driver not found", ex.getMessage());
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 }

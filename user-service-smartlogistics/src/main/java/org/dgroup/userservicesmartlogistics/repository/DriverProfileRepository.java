@@ -14,14 +14,14 @@ public interface DriverProfileRepository  extends JpaRepository<DriverProfile, U
 
     Optional<DriverProfile> findByDriverLicenseNumber(String driverLicenseNumber);
 
-    Optional<DriverProfile> findByTruckType(String truckType);
+    List<DriverProfile> findByTruckType(String truckType);
 
-    List<DriverStatus> findByStatus (DriverStatus status);
+    List<DriverProfile> findByStatus (DriverStatus status);
 
     // Need to be @Query + Haversine formula
     List<DriverProfile> findNearestDrivers(Double latitude, Double longitude);
 
-    Optional<DriverProfile> findByRating (Double rating);
+    List<DriverProfile> findByRating (Double rating);
 
     boolean existsByDriverLicenseNumber(String driverLicenseNumber);
 }

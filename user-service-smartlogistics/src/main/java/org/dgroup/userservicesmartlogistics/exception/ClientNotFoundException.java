@@ -1,6 +1,7 @@
 package org.dgroup.userservicesmartlogistics.exception;
 
 public class ClientNotFoundException extends RuntimeException {
-    public ClientNotFoundException(String clientProfileNotFound) {
+    public ClientNotFoundException(String message) {
+        super(message);
     }
 }
