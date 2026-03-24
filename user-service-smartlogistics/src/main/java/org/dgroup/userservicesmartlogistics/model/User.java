@@ -44,6 +44,9 @@ public class User {
     boolean enabled = true;
 
     @Column(nullable = false)
+    boolean verified = false;
+
+    @Column(nullable = false)
     LocalDateTime createdAt;
 
     @Column(nullable = false)

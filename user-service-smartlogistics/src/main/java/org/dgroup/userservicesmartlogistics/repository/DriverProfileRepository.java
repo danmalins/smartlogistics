@@ -1,5 +1,6 @@
 package org.dgroup.userservicesmartlogistics.repository;
 
+import org.dgroup.userservicesmartlogistics.model.ClientProfile;
 import org.dgroup.userservicesmartlogistics.model.DriverProfile;
 import org.dgroup.userservicesmartlogistics.model.DriverStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,7 +11,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface DriverProfileRepository  extends JpaRepository<DriverProfile, UUID> {
+public interface DriverProfileRepository extends JpaRepository<DriverProfile, UUID> {
+
+    Optional<DriverProfile> findByUserEmail(String email);
 
     Optional<DriverProfile> findByDriverLicenseNumber(String driverLicenseNumber);
 

@@ -1,5 +1,6 @@
 package org.dgroup.userservicesmartlogistics.service;
 
+import org.dgroup.userservicesmartlogistics.dto.admin.CreateManagerRequestDTO;
 import org.dgroup.userservicesmartlogistics.model.User;
 import org.dgroup.userservicesmartlogistics.model.UserRole;
 import org.springframework.security.core.Authentication;
