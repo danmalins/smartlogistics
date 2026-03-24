@@ -6,7 +6,6 @@ import org.dgroup.userservicesmartlogistics.exception.ClientNotFoundException;
 import org.dgroup.userservicesmartlogistics.model.ClientProfile;
 import org.dgroup.userservicesmartlogistics.repository.ClientProfileRepository;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,11 +21,5 @@ public class ClientServiceImpl implements ClientService {
 
         return clientProfileRepository.findByUserEmail(email)
                 .orElseThrow(() -> new ClientNotFoundException("Client profile not found"));
-    }
-
-    private boolean isAdmin(Authentication authentication) {
-        return authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .anyMatch(role -> role.equals("ROLE_ADMIN"));
     }
 }
