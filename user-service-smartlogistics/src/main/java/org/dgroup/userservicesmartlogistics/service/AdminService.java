@@ -13,6 +13,8 @@ public interface AdminService {
 
     User getUser(UUID userId, Authentication authentication);
 
+    void createManager(CreateManagerRequestDTO dto, Authentication authentication);
+
     void blockUser(UUID userId, Authentication authentication);
 
     void unblockUser(UUID userId, Authentication authentication);
