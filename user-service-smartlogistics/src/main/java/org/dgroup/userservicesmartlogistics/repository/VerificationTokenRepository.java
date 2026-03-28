@@ -1,5 +1,6 @@
 package org.dgroup.userservicesmartlogistics.repository;
 
+import org.dgroup.userservicesmartlogistics.model.User;
 import org.dgroup.userservicesmartlogistics.model.VerificationToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -12,5 +13,9 @@ public interface VerificationTokenRepository extends JpaRepository<VerificationT
     Optional<VerificationToken> findByToken (String token);
 
     void deleteByToken(String token);
+
+    void deleteByUser(User user);
+
+    // User user(User user);
 }
 

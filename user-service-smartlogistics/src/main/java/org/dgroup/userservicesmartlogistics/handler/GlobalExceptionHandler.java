@@ -1,10 +1,7 @@
 package org.dgroup.userservicesmartlogistics.handler;
 
 import org.dgroup.userservicesmartlogistics.dto.error.ApiError;
-import org.dgroup.userservicesmartlogistics.exception.ClientNotFoundException;
-import org.dgroup.userservicesmartlogistics.exception.CustomAccessDeniedException;
-import org.dgroup.userservicesmartlogistics.exception.DriverNotFoundException;
-import org.dgroup.userservicesmartlogistics.exception.UserNotFoundException;
+import org.dgroup.userservicesmartlogistics.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -12,6 +9,35 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+
+    // 401 Unauthorized - Wrong login or password
+    @ExceptionHandler(AuthenticationFailedException.class)
+    public ResponseEntity<ApiError> handleAuthenticationFailed(AuthenticationFailedException ex) {
+        ApiError error = new ApiError(HttpStatus.UNAUTHORIZED, "Authentification error", ex.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+    }
+
+    // 403 Forbidden
+    @ExceptionHandler(UserNotVerifiedException.class)
+    public ResponseEntity<ApiError> handleUserNotVerified(UserNotVerifiedException ex) {
+        ApiError error = new ApiError(HttpStatus.FORBIDDEN, "User not verified", ex.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
+    }
+
+    // 403 Forbidden
+    @ExceptionHandler(TokenExpiredException.class)
+    public ResponseEntity<ApiError> handleTokenExpired(TokenExpiredException ex) {
+        ApiError error = new ApiError(HttpStatus.FORBIDDEN, "Verification token expired", ex.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
+    }
+
+    // 403 Forbidden
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<ApiError> handleInvalidToken(InvalidTokenException ex) {
+        ApiError error = new ApiError(HttpStatus.FORBIDDEN, "Invalid token", ex.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
+    }
 
     // 403 Forbidden
     @ExceptionHandler(CustomAccessDeniedException.class)
