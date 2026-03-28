@@ -5,6 +5,7 @@ import org.dgroup.userservicesmartlogistics.dto.auth.LoginRequestDTO;
 import org.dgroup.userservicesmartlogistics.dto.auth.RegisterClientRequestDTO;
 
 public interface AuthService {
+
     void registerClient(RegisterClientRequestDTO request);
 
     AuthResponseDTO login(LoginRequestDTO request);
