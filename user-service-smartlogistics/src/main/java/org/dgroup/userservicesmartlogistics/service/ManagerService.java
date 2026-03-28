@@ -1,5 +1,6 @@
 package org.dgroup.userservicesmartlogistics.service;
 
+import org.dgroup.userservicesmartlogistics.dto.manager.CreateDriverRequestDTO;
 import org.dgroup.userservicesmartlogistics.dto.request.UpdateDriverLicenseNumberRequestDTO;
 import org.dgroup.userservicesmartlogistics.dto.request.UpdateDriverTruckInfoRequestDTO;
 import org.dgroup.userservicesmartlogistics.model.DriverProfile;
@@ -10,6 +11,8 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ManagerService {
+
+    public void createDriver(CreateDriverRequestDTO dto, Authentication authentication);
 
     List<DriverProfile> getAvailableDrivers();
 

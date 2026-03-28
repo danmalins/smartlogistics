@@ -18,7 +18,6 @@ public class CreateManagerRequestDTO {
     String phone;
 
     String department;
-
     String employeeNumber;
 
 }

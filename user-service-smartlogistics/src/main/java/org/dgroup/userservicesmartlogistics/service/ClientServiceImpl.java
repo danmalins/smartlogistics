@@ -20,6 +20,6 @@ public class ClientServiceImpl implements ClientService {
         String email = authentication.getName();
 
         return clientProfileRepository.findByUserEmail(email)
-                .orElseThrow(() -> new ClientNotFoundException("Client profile not found"));
+                .orElseThrow(() -> new ClientNotFoundException("Client with email: '" + email + "' not found"));
     }
 }
