@@ -1,7 +1,6 @@
 package org.dgroup.userservicesmartlogistics.service;
 
 import jakarta.transaction.Transactional;
-import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import org.dgroup.userservicesmartlogistics.dto.request.UserFirstnameAndLastnameUpdateDTO;
 import org.dgroup.userservicesmartlogistics.dto.request.UserUpdatePasswordRequestDTO;

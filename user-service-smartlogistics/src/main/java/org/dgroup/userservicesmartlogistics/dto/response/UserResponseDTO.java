@@ -2,14 +2,15 @@ package org.dgroup.userservicesmartlogistics.dto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.dgroup.userservicesmartlogistics.model.UserRole;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserResponseDTO {
 
@@ -18,12 +19,10 @@ public class UserResponseDTO {
     String email;
 
     String firstName;
+
     String lastName;
 
     String phone;
 
-    UserRole role;
-
-    boolean enabled;
-
+    LocalDateTime createdAt;
 }
