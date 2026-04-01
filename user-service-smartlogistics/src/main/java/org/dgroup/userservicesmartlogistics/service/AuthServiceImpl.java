@@ -19,7 +19,6 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 @Transactional
@@ -38,7 +37,7 @@ public class AuthServiceImpl implements AuthService {
     private final EmailValidator emailValidator;
 
     @Override
-    public void registerClient(RegisterClientRequestDTO request) {
+    public ClientProfile registerClient(RegisterClientRequestDTO request) {
 
         if (!emailValidator.isValid(request.getEmail(), null)) {
             throw new RuntimeException("Invalid email format");
@@ -75,6 +74,7 @@ public class AuthServiceImpl implements AuthService {
 
         VerificationToken vt = verificationTokenService.createTokenForUser(savedUser);
 
+
         // Відправляємо верифікаційний лист
 //        VerificationEmailEvent verificationEvent = VerificationEmailEvent.builder()
 //                .email(savedUser.getEmail())
@@ -83,6 +83,8 @@ public class AuthServiceImpl implements AuthService {
 ////                .verificationUrl("http://localhost:8080/api/users/verify?token=" + vt.getToken())
 //                .build();
 //        userEventProducer.publishVerificationEmail(verificationEvent);
+
+        return clientProfileRepository.save(clientProfile);
     }
 
     @Override
