@@ -12,13 +12,13 @@ import java.util.UUID;
 
 public interface ManagerService {
 
-    public void createDriver(CreateDriverRequestDTO dto, Authentication authentication);
+    DriverProfile createDriver(CreateDriverRequestDTO dto, Authentication authentication);
 
-    List<DriverProfile> getAvailableDrivers();
+    List<DriverProfile> getAvailableDrivers(Authentication authentication);
 
-    DriverProfile getDriver(UUID driverId);
+    DriverProfile getDriver(UUID driverId, Authentication authentication);
 
-    List<DriverProfile> getDriversByStatus(DriverStatus status);
+    List<DriverProfile> getDriversByStatus(DriverStatus status, Authentication authentication);
 
     DriverProfile updateTruckInfo(UUID id, UpdateDriverTruckInfoRequestDTO request,
             Authentication authentication

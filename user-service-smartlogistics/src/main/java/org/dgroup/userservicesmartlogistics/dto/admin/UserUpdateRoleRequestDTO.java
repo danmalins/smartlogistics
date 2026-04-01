@@ -1,15 +1,14 @@
 package org.dgroup.userservicesmartlogistics.dto.admin;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.UUID;
-
+import org.dgroup.userservicesmartlogistics.model.UserRole;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BlockUserRequestDTO {
-    UUID userId;
+public class UserUpdateRoleRequestDTO {
+    UserRole role;
 }

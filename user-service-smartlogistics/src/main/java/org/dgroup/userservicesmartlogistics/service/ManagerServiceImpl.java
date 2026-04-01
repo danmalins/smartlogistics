@@ -32,8 +32,7 @@ public class ManagerServiceImpl implements ManagerService {
 
 
     @Override
-    public void createDriver(CreateDriverRequestDTO dto, Authentication authentication) {
-        String managerEmail = authentication.getName();
+    public DriverProfile createDriver(CreateDriverRequestDTO dto, Authentication authentication) {
 
         // проверка что это менеджер
         if (!isManager(authentication) && !isAdmin(authentication))
@@ -73,22 +72,28 @@ public class ManagerServiceImpl implements ManagerService {
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        driverProfileRepository.save(driver);
+        return driverProfileRepository.save(driver);
     }
 
     @Override
-    public List<DriverProfile> getAvailableDrivers() {
+    public List<DriverProfile> getAvailableDrivers(Authentication authentication) {
+        if (!isManager(authentication) && !isAdmin(authentication))
+            throw new CustomAccessDeniedException("Only manager or admin can get available drivers");
         return driverProfileRepository.findByStatus(DriverStatus.AVAILABLE);
     }
 
     @Override
-    public DriverProfile getDriver(UUID driverId) {
+    public DriverProfile getDriver(UUID driverId, Authentication authentication) {
+        if (!isManager(authentication) && !isAdmin(authentication))
+            throw new CustomAccessDeniedException("Only manager or admin can get driver profile");
         return driverProfileRepository.findById(driverId)
                 .orElseThrow(() -> new DriverNotFoundException("Driver not found"));
     }
 
     @Override
-    public List<DriverProfile> getDriversByStatus(DriverStatus status) {
+    public List<DriverProfile> getDriversByStatus(DriverStatus status, Authentication authentication) {
+        if (!isManager(authentication) && !isAdmin(authentication))
+            throw new CustomAccessDeniedException("Only manager or admin can get driver by status");
         return driverProfileRepository.findByStatus(status);
     }
 

@@ -21,7 +21,7 @@ public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
 
-    @PutMapping("/{id}")
+    @PutMapping("first-and-last-name/{id}")
     public ResponseEntity<UserResponseDTO> updateUserFirstnameAndLastname(
             @PathVariable UUID id,
             @RequestBody UserFirstnameAndLastnameUpdateDTO dto,
@@ -30,7 +30,7 @@ public class UserController {
         return ResponseEntity.ok(userMapper.toResponse(updatedUser));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("password/{id}")
     public ResponseEntity<UserResponseDTO> updateUserPassword(
             @PathVariable UUID id,
             @RequestBody UserUpdatePasswordRequestDTO dto,
@@ -39,7 +39,7 @@ public class UserController {
         return ResponseEntity.ok(userMapper.toResponse(updatedUser));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("phone/{id}")
     public ResponseEntity<UserResponseDTO> updateUserPhoneNumber(
             @PathVariable UUID id,
             @RequestBody UserUpdatePhoneNumberRequestDTO dto,

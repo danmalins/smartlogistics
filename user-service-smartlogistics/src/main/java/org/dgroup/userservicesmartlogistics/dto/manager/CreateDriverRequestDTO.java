@@ -18,11 +18,7 @@ public class CreateDriverRequestDTO {
     String phone;
 
     String driverLicenseNumber;
-
     String truckType;
-
     Double truckCapacityWeight;
-
     Double truckCapacityVolume;
-
 }

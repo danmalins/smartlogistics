@@ -1,6 +1,8 @@
 package org.dgroup.userservicesmartlogistics.service;
 
 import org.dgroup.userservicesmartlogistics.dto.admin.CreateManagerRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.admin.UserUpdateRoleRequestDTO;
+import org.dgroup.userservicesmartlogistics.model.ManagerProfile;
 import org.dgroup.userservicesmartlogistics.model.User;
 import org.dgroup.userservicesmartlogistics.model.UserRole;
 import org.springframework.security.core.Authentication;
@@ -13,13 +15,13 @@ public interface AdminService {
 
     User getUser(UUID userId, Authentication authentication);
 
-    void createManager(CreateManagerRequestDTO dto, Authentication authentication);
+    ManagerProfile createManager(CreateManagerRequestDTO dto, Authentication authentication);
 
-    void blockUser(UUID userId, Authentication authentication);
+    User blockUser(UUID userId, Authentication authentication);
 
-    void unblockUser(UUID userId, Authentication authentication);
+    User unblockUser(UUID userId, Authentication authentication);
 
     void deleteUser(UUID userId, Authentication authentication);
 
-    void changeUserRole(UUID userId, UserRole role,  Authentication authentication);
+    User updateUserRole(UUID userId, UserUpdateRoleRequestDTO dto, Authentication authentication);
 }

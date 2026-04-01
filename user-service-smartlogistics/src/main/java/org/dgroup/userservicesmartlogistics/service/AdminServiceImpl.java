@@ -2,6 +2,7 @@ package org.dgroup.userservicesmartlogistics.service;
 
 import lombok.RequiredArgsConstructor;
 import org.dgroup.userservicesmartlogistics.dto.admin.CreateManagerRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.admin.UserUpdateRoleRequestDTO;
 import org.dgroup.userservicesmartlogistics.exception.CustomAccessDeniedException;
 import org.dgroup.userservicesmartlogistics.exception.UserNotFoundException;
 import org.dgroup.userservicesmartlogistics.model.ManagerProfile;
@@ -28,7 +29,7 @@ public class AdminServiceImpl implements AdminService  {
     private final ManagerProfileRepository managerProfileRepository;
 
     @Override
-    public void createManager(CreateManagerRequestDTO dto, Authentication authentication) {
+    public ManagerProfile createManager(CreateManagerRequestDTO dto, Authentication authentication) {
 
         if (!isAdmin(authentication))
             throw new CustomAccessDeniedException("Only admin can create manager");
@@ -58,7 +59,7 @@ public class AdminServiceImpl implements AdminService  {
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        managerProfileRepository.save(manager);
+        return managerProfileRepository.save(manager);
     }
 
     @Override
@@ -77,23 +78,23 @@ public class AdminServiceImpl implements AdminService  {
     }
 
     @Override
-    public void blockUser(UUID userId, Authentication authentication) {
+    public User blockUser(UUID userId, Authentication authentication) {
         if (!isAdmin(authentication))
             throw new CustomAccessDeniedException("Only admins can block user by id");
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(
                 "User with id '" + userId + "' not found."));
         user.setEnabled(false);
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     @Override
-    public void unblockUser(UUID userId, Authentication authentication) {
+    public User unblockUser(UUID userId, Authentication authentication) {
         if (!isAdmin(authentication))
             throw new CustomAccessDeniedException("Only admins can unblock user by id");
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(
                 "User with id '" + userId + "' not found."));
         user.setEnabled(true);
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     @Override
@@ -106,13 +107,13 @@ public class AdminServiceImpl implements AdminService  {
     }
 
     @Override
-    public void changeUserRole(UUID userId, UserRole role, Authentication authentication) {
+    public User updateUserRole(UUID userId, UserUpdateRoleRequestDTO dto, Authentication authentication) {
         if (!isAdmin(authentication))
             throw new CustomAccessDeniedException("Only admins can change user role");
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(
                 "User with id '" + userId + "' not found."));
-        user.setRole(role);
-        userRepository.save(user);
+        user.setRole(dto.getRole());
+        return userRepository.save(user);
     }
 
     private boolean isAdmin(Authentication authentication) {

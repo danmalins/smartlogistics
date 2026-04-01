@@ -5,6 +5,8 @@ import org.dgroup.userservicesmartlogistics.model.DriverProfile;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface DriverMapper {
 
@@ -13,5 +15,7 @@ public interface DriverMapper {
     @Mapping(source = "user.lastName", target = "lastName")
     @Mapping(source = "user.phone", target = "phone")
     DriverProfileResponseDTO toResponse(DriverProfile driverProfile);
+
+    List<DriverProfileResponseDTO> toResponseList(List<DriverProfile> drivers);
 
 }
