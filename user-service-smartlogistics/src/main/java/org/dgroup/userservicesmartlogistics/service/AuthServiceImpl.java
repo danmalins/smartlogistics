@@ -2,10 +2,12 @@ package org.dgroup.userservicesmartlogistics.service;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.dgroup.commonevents.VerificationEmailEvent;
 import org.dgroup.userservicesmartlogistics.dto.auth.AuthResponseDTO;
 import org.dgroup.userservicesmartlogistics.dto.auth.LoginRequestDTO;
 import org.dgroup.userservicesmartlogistics.dto.auth.RegisterClientRequestDTO;
 import org.dgroup.userservicesmartlogistics.exception.*;
+import org.dgroup.userservicesmartlogistics.kafka.UserEventProducer;
 import org.dgroup.userservicesmartlogistics.model.*;
 import org.dgroup.userservicesmartlogistics.repository.ClientProfileRepository;
 import org.dgroup.userservicesmartlogistics.repository.UserRepository;
@@ -19,8 +21,11 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+
+@Service
 @Transactional
 @AllArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -35,6 +40,8 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
 
     private final EmailValidator emailValidator;
+
+    private final UserEventProducer userEventProducer;
 
     @Override
     public ClientProfile registerClient(RegisterClientRequestDTO request) {
@@ -74,15 +81,15 @@ public class AuthServiceImpl implements AuthService {
 
         VerificationToken vt = verificationTokenService.createTokenForUser(savedUser);
 
-
-        // Відправляємо верифікаційний лист
-//        VerificationEmailEvent verificationEvent = VerificationEmailEvent.builder()
-//                .email(savedUser.getEmail())
-//                .username(savedUser.getUsername())
-//                .token(vt.getToken())
-////                .verificationUrl("http://localhost:8080/api/users/verify?token=" + vt.getToken())
-//                .build();
-//        userEventProducer.publishVerificationEmail(verificationEvent);
+         //Відправляємо верифікаційний лист
+        VerificationEmailEvent verificationEvent = VerificationEmailEvent.builder()
+                .email(savedUser.getEmail())
+                .firstName(savedUser.getFirstName())
+                .lastName(savedUser.getLastName())
+                .token(vt.getToken())
+//                .verificationUrl("http://localhost:8080/api/users/verify?token=" + vt.getToken())
+                .build();
+        userEventProducer.publishVerificationEmail(verificationEvent);
 
         return clientProfileRepository.save(clientProfile);
     }
