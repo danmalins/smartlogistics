@@ -26,6 +26,7 @@ public class VerificationTokenService {
         VerificationToken vt = VerificationToken.builder()
                 .token(token)
                 .user(user)
+                .createdAt(LocalDateTime.now())
                 .expiryDate(LocalDateTime.now().plus(TOKEN_TTL))
                 .build();
         return tokenRepository.save(vt);

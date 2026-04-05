@@ -42,6 +42,7 @@ public class AuthServiceImpl implements AuthService {
     private final EmailValidator emailValidator;
 
     private final UserEventProducer userEventProducer;
+    private final VerificationRateLimitService verificationRateLimitService;
 
     @Override
     public ClientProfile registerClient(RegisterClientRequestDTO request) {
@@ -80,18 +81,9 @@ public class AuthServiceImpl implements AuthService {
         User savedUser = userRepository.save(user);
 
         VerificationToken vt = verificationTokenService.createTokenForUser(savedUser);
+        sendVerificationEmail(savedUser, vt.getToken());
 
-         //Відправляємо верифікаційний лист
-        VerificationEmailEvent verificationEvent = VerificationEmailEvent.builder()
-                .email(savedUser.getEmail())
-                .firstName(savedUser.getFirstName())
-                .lastName(savedUser.getLastName())
-                .token(vt.getToken())
-//                .verificationUrl("http://localhost:8080/api/users/verify?token=" + vt.getToken())
-                .build();
-        userEventProducer.publishVerificationEmail(verificationEvent);
-
-        return clientProfileRepository.save(clientProfile);
+        return savedUser.getClientProfile();
     }
 
     @Override
@@ -104,6 +96,13 @@ public class AuthServiceImpl implements AuthService {
 
             MyUserDetails myUserDetails = (MyUserDetails) authentication.getPrincipal();
             User user = myUserDetails.getUser();
+
+            if (!user.isEnabled())
+                throw new RuntimeException("User is blocked");
+
+            if (!user.isVerified())
+                throw new UserNotVerifiedException("Email not verified");
+
 
             return AuthResponseDTO.builder()
                     .token(jwtService.generateToken(
@@ -132,6 +131,10 @@ public class AuthServiceImpl implements AuthService {
         }
 
         User user = vt.getUser();
+
+        if (!user.isEnabled())
+            throw new RuntimeException("User is blocked");
+
         user.setVerified(true);
         userRepository.save(user);
         verificationTokenService.deleteToken(token);
@@ -147,39 +150,47 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void resendVerificationToken(String email) {
 
-        // 1. Валидация email
         if (!emailValidator.isValid(email, null)) {
             throw new RuntimeException("Invalid email format");
         }
 
-        // 2. Найти пользователя
+        // 🔥 RATE LIMIT (САМОЕ ПЕРВОЕ)
+        verificationRateLimitService.checkRateLimit(email);
+
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException(
                         "User with email '" + email + "' not found"
                 ));
 
-        // 3. Проверка: пользователь не заблокирован
         if (!user.isEnabled()) {
             throw new RuntimeException("User is blocked");
         }
 
-        // 4. Проверка: уже подтверждён
         if (user.isVerified()) {
             throw new RuntimeException("User already verified");
         }
 
-        // 5. (опционально) проверка роли
-        if (user.getRole() != UserRole.ROLE_CLIENT) {
-            throw new RuntimeException("Only clients can request verification");
+        if (!user.getRole().equals(UserRole.ROLE_CLIENT)) {
+            throw new RuntimeException("Access denied");
         }
 
-        // 6. Удалить старые токены
         tokenRepository.deleteByUser(user);
 
-        // 7. Создать новый токен
         VerificationToken newToken = verificationTokenService.createTokenForUser(user);
 
-        // 8. Отправить email Kafka
-        //emailService.sendVerificationEmail(user.getEmail(), newToken.getToken());
+        sendVerificationEmail(user, newToken.getToken());
+    }
+
+    private void sendVerificationEmail(User user, String token) {
+        if (!user.isEnabled())
+            throw new RuntimeException("User with email '" + user.getEmail() + "' is blocked");
+        VerificationEmailEvent event = VerificationEmailEvent.builder()
+                .email(user.getEmail())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .token(token)
+                .build();
+
+        userEventProducer.publishVerificationEmail(event);
     }
 }
