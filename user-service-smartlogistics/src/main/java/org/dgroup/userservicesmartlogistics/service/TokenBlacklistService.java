@@ -10,9 +10,6 @@ import java.util.concurrent.TimeUnit;
 public class TokenBlacklistService {
     private final StringRedisTemplate redisTemplate;
 
-    @Value("${jwt.expiration}")
-    private long expiration;
-
     public TokenBlacklistService(StringRedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
     }

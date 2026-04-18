@@ -1,4 +1,4 @@
-package org.dgroup.commonevents;
+package org.dgroup.userservicesmartlogistics.event;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

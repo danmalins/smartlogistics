@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dgroup.commonevents.UserRegisteredEvent;
-import org.dgroup.commonevents.VerificationEmailEvent;
+import org.dgroup.notificationservicesmartlogistics.event.UserRegisteredEvent;
+import org.dgroup.notificationservicesmartlogistics.event.VerificationEmailEvent;
 import org.dgroup.notificationservicesmartlogistics.service.EmailService;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -28,10 +28,9 @@ public class NotificationListener {
 
             emailService.sendEmail(
                     event.getEmail(),
-                    "Welcome to Our Music Shop!",
+                    "Welcome to SmartLogistics!",
                     "Hello " + event.getFirstName() + " " + event.getLastName() + ",\n\n" +
-                            "Thank you for registering with us!\n\n" +
-                            "Enjoy your journey with music 🎵"
+                            "Thank you for registering with us!"
             );
 
         } catch (Exception e) {

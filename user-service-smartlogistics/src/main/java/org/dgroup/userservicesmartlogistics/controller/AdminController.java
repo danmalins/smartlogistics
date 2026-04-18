@@ -10,8 +10,6 @@ import org.dgroup.userservicesmartlogistics.mapper.UserMapper;
 import org.dgroup.userservicesmartlogistics.model.ManagerProfile;
 import org.dgroup.userservicesmartlogistics.model.User;
 import org.dgroup.userservicesmartlogistics.service.AdminService;
-import org.dgroup.userservicesmartlogistics.service.ManagerService;
-import org.dgroup.userservicesmartlogistics.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -23,15 +21,12 @@ import java.util.UUID;
 @RequestMapping("/api/admins")
 @RequiredArgsConstructor
 public class AdminController {
-    public final UserService userService;
     public final UserMapper userMapper;
     public final AdminService adminService;
-    public final ManagerService managerService;
     public final ManagerMapper managerMapper;
 
 
     @GetMapping
-
     public ResponseEntity<List<UserResponseDTO>> getAllUsers(
             Authentication authentication) {
         List<User> users = adminService.getAllUsers(authentication);

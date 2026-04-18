@@ -1,5 +1,6 @@
 package org.dgroup.userservicesmartlogistics.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.dgroup.userservicesmartlogistics.dto.auth.AuthResponseDTO;
@@ -26,6 +27,7 @@ public class AuthController {
         ClientProfile clientProfile = authService.registerClient(request);
         return ResponseEntity.ok(clientMapper.toResponse(clientProfile));
     }
+
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDTO> login(
             @RequestBody LoginRequestDTO request) {
@@ -35,7 +37,7 @@ public class AuthController {
 
     @PostMapping("/verify-email")
     public ResponseEntity<String> verifyEmail(
-            @RequestParam String token) {
+            @RequestParam String token) throws JsonProcessingException {
         authService.verifyEmail(token);
         return ResponseEntity.ok("Email successfully verified!");
     }

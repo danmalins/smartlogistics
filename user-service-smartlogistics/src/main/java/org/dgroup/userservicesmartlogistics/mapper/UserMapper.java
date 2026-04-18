@@ -1,8 +1,6 @@
 package org.dgroup.userservicesmartlogistics.mapper;
 
-import org.dgroup.userservicesmartlogistics.dto.response.DriverProfileResponseDTO;
 import org.dgroup.userservicesmartlogistics.dto.response.UserResponseDTO;
-import org.dgroup.userservicesmartlogistics.model.DriverProfile;
 import org.dgroup.userservicesmartlogistics.model.User;
 import org.mapstruct.Mapper;
 

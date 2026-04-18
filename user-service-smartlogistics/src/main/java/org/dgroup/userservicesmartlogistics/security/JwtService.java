@@ -17,8 +17,8 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    @Value("${jwt.secret}")
-    private String secretKey;
+    @Value("${JWT_SECRET}")
+    private String secret;
 
     public String generateToken(String email, String role) {
         Map<String, Object> claims = new HashMap<>();
@@ -36,7 +36,7 @@ public class JwtService {
     }
 
     private SecretKey getSecretKey() {
-        return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+        return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
     public String extractEmail(String token) {

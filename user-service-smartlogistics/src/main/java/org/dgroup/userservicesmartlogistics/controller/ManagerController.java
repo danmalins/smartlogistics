@@ -5,12 +5,9 @@ import org.dgroup.userservicesmartlogistics.dto.manager.CreateDriverRequestDTO;
 import org.dgroup.userservicesmartlogistics.dto.request.UpdateDriverLicenseNumberRequestDTO;
 import org.dgroup.userservicesmartlogistics.dto.request.UpdateDriverTruckInfoRequestDTO;
 import org.dgroup.userservicesmartlogistics.dto.response.DriverProfileResponseDTO;
-import org.dgroup.userservicesmartlogistics.dto.response.ManagerProfileResponseDTO;
 import org.dgroup.userservicesmartlogistics.mapper.DriverMapper;
-import org.dgroup.userservicesmartlogistics.mapper.ManagerMapper;
 import org.dgroup.userservicesmartlogistics.model.DriverProfile;
 import org.dgroup.userservicesmartlogistics.model.DriverStatus;
-import org.dgroup.userservicesmartlogistics.repository.DriverProfileRepository;
 import org.dgroup.userservicesmartlogistics.service.ManagerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -24,7 +21,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ManagerController {
     private final ManagerService managerService;
-    private final ManagerMapper managerMapper;
     private final DriverMapper driverMapper;
 
     @PostMapping
@@ -65,7 +61,7 @@ public class ManagerController {
             @PathVariable UUID id,
             @RequestBody UpdateDriverTruckInfoRequestDTO dto,
             Authentication authentication) {
-        DriverProfile updatedTruckInfo = managerService.updateTruckInfo(id, dto,authentication);
+        DriverProfile updatedTruckInfo = managerService.updateTruckInfo(id, dto, authentication);
         return ResponseEntity.ok(driverMapper.toResponse(updatedTruckInfo));
     }
 

@@ -1,15 +1,16 @@
 package org.dgroup.userservicesmartlogistics.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.dgroup.commonevents.VerificationEmailEvent;
 import org.dgroup.userservicesmartlogistics.dto.auth.AuthResponseDTO;
 import org.dgroup.userservicesmartlogistics.dto.auth.LoginRequestDTO;
 import org.dgroup.userservicesmartlogistics.dto.auth.RegisterClientRequestDTO;
+import org.dgroup.userservicesmartlogistics.event.UserRegisteredEvent;
+import org.dgroup.userservicesmartlogistics.event.VerificationEmailEvent;
 import org.dgroup.userservicesmartlogistics.exception.*;
 import org.dgroup.userservicesmartlogistics.kafka.UserEventProducer;
 import org.dgroup.userservicesmartlogistics.model.*;
-import org.dgroup.userservicesmartlogistics.repository.ClientProfileRepository;
 import org.dgroup.userservicesmartlogistics.repository.UserRepository;
 import org.dgroup.userservicesmartlogistics.repository.VerificationTokenRepository;
 import org.dgroup.userservicesmartlogistics.security.JwtService;
@@ -30,7 +31,6 @@ import java.time.LocalDateTime;
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
-    private final ClientProfileRepository clientProfileRepository;
     private final VerificationTokenService verificationTokenService;
     private final VerificationTokenRepository tokenRepository;
 
@@ -114,7 +114,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void verifyEmail(String token) {
+    public void verifyEmail(String token) throws JsonProcessingException {
         VerificationToken vt = verificationTokenService.findByToken(token)
                 .orElseThrow(() -> new InvalidTokenException("Invalid verification token"));
 
@@ -133,11 +133,12 @@ public class AuthServiceImpl implements AuthService {
         verificationTokenService.deleteToken(token);
 
         // Тільки тут відправляємо Welcome event
-//        UserRegisteredEvent event = UserRegisteredEvent.builder()
-//                .email(user.getEmail())
-//                .username(user.getUsername())
-//                .build();
-//        userEventProducer.publishUserRegistered(event);
+        UserRegisteredEvent event = UserRegisteredEvent.builder()
+                .email(user.getEmail())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .build();
+        userEventProducer.publishUserRegistered(event);
     }
 
     @Override

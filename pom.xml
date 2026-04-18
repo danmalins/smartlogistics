@@ -10,7 +10,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>common-events</module>
         <module>user-service-smartlogistics</module>
         <module>notification-service-smartlogistics</module>
     </modules>
