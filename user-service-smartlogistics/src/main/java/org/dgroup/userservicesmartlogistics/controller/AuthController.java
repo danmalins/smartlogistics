@@ -1,5 +1,6 @@
 package org.dgroup.userservicesmartlogistics.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.dgroup.userservicesmartlogistics.dto.auth.AuthResponseDTO;
 import org.dgroup.userservicesmartlogistics.dto.auth.LoginRequestDTO;
@@ -21,7 +22,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<ClientProfileResponseDTO> registerClient(
-            @RequestBody RegisterClientRequestDTO request) {
+           @Valid @RequestBody RegisterClientRequestDTO request) {
         ClientProfile clientProfile = authService.registerClient(request);
         return ResponseEntity.ok(clientMapper.toResponse(clientProfile));
     }

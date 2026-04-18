@@ -1,5 +1,7 @@
 package org.dgroup.userservicesmartlogistics.dto.auth;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -9,7 +11,8 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RegisterClientRequestDTO {
-
+    @Email(message = "Invalid email format")
+    @NotBlank
     private String email;
     private String password;
 

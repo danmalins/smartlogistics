@@ -14,7 +14,6 @@ import org.dgroup.userservicesmartlogistics.repository.UserRepository;
 import org.dgroup.userservicesmartlogistics.repository.VerificationTokenRepository;
 import org.dgroup.userservicesmartlogistics.security.JwtService;
 import org.dgroup.userservicesmartlogistics.security.MyUserDetails;
-import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -39,17 +38,11 @@ public class AuthServiceImpl implements AuthService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    private final EmailValidator emailValidator;
-
     private final UserEventProducer userEventProducer;
     private final VerificationRateLimitService verificationRateLimitService;
 
     @Override
     public ClientProfile registerClient(RegisterClientRequestDTO request) {
-
-        if (!emailValidator.isValid(request.getEmail(), null)) {
-            throw new RuntimeException("Invalid email format");
-        }
 
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("User already exists");
@@ -149,10 +142,6 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void resendVerificationToken(String email) {
-
-        if (!emailValidator.isValid(email, null)) {
-            throw new RuntimeException("Invalid email format");
-        }
 
         // 🔥 RATE LIMIT (САМОЕ ПЕРВОЕ)
         verificationRateLimitService.checkRateLimit(email);

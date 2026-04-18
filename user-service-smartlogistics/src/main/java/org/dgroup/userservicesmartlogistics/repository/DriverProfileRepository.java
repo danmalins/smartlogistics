@@ -1,9 +1,10 @@
 package org.dgroup.userservicesmartlogistics.repository;
 
-import org.dgroup.userservicesmartlogistics.model.ClientProfile;
 import org.dgroup.userservicesmartlogistics.model.DriverProfile;
 import org.dgroup.userservicesmartlogistics.model.DriverStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,9 +22,23 @@ public interface DriverProfileRepository extends JpaRepository<DriverProfile, UU
 
     List<DriverProfile> findByStatus (DriverStatus status);
 
-    // Need to be @Query + Haversine formula
-    List<DriverProfile> findNearestDrivers(Double latitude, Double longitude);
-
+    @Query(value = """
+    SELECT * FROM driver_profile d
+    ORDER BY (
+        6371 * acos(
+            cos(radians(:latitude)) *
+            cos(radians(d.current_latitude)) *
+            cos(radians(d.current_longitude) - radians(:longitude)) +
+            sin(radians(:latitude)) *
+            sin(radians(d.current_latitude))
+        )
+    )
+    LIMIT 10
+""", nativeQuery = true)
+    List<DriverProfile> findNearestDrivers(
+            @Param("latitude") Double latitude,
+            @Param("longitude") Double longitude
+    );
     List<DriverProfile> findByRating (Double rating);
 
     boolean existsByDriverLicenseNumber(String driverLicenseNumber);
