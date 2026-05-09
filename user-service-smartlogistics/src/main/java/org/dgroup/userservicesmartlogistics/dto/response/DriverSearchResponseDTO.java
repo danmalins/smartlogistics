@@ -11,7 +11,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class DriverSearchResponseDTO {
-    UUID driverId;
 
     String firstName;
 

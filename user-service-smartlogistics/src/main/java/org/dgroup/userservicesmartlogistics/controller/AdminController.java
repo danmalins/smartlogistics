@@ -10,6 +10,7 @@ import org.dgroup.userservicesmartlogistics.mapper.UserMapper;
 import org.dgroup.userservicesmartlogistics.model.ManagerProfile;
 import org.dgroup.userservicesmartlogistics.model.User;
 import org.dgroup.userservicesmartlogistics.service.AdminService;
+import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,6 @@ public class AdminController {
     public final AdminService adminService;
     public final ManagerMapper managerMapper;
 
-
     @GetMapping
     public ResponseEntity<List<UserResponseDTO>> getAllUsers(
             Authentication authentication) {
@@ -33,11 +33,11 @@ public class AdminController {
         return ResponseEntity.ok(userMapper.toResponseList(users));
     }
 
-    @GetMapping("{id}")
+    @GetMapping("{email}")
     public ResponseEntity<UserResponseDTO> getUser(
-            @PathVariable UUID id,
+            @PathVariable String email,
             Authentication authentication) {
-        User user = adminService.getUser(id, authentication);
+        User user = adminService.getUser(email, authentication);
         return ResponseEntity.ok(userMapper.toResponse(user));
     }
 
@@ -49,36 +49,36 @@ public class AdminController {
         return ResponseEntity.ok(managerMapper.toResponse(managerProfile));
     }
 
-    @PutMapping("block/{id}")
+    @PutMapping("block/{email}")
     public ResponseEntity<UserResponseDTO> blockUser(
-            @PathVariable UUID id,
+            @PathVariable String email,
             Authentication authentication) {
-        User user = adminService.blockUser(id, authentication);
+        User user = adminService.blockUser(email, authentication);
         return ResponseEntity.ok(userMapper.toResponse(user));
     }
 
-    @PutMapping("unblock/{id}")
+    @PutMapping("unblock/{email}")
     ResponseEntity<UserResponseDTO> unblockUser(
-            @PathVariable UUID id,
+            @PathVariable String email,
             Authentication authentication) {
-        User user = adminService.unblockUser(id, authentication);
+        User user = adminService.unblockUser(email, authentication);
         return ResponseEntity.ok(userMapper.toResponse(user));
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("{email}")
     public ResponseEntity<Void> deleteUser(
-            @PathVariable UUID id,
+            @PathVariable String email,
             Authentication authentication) {
-        adminService.deleteUser(id, authentication);
+        adminService.deleteUser(email, authentication);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("role/{id}")
+    @PutMapping("role/{email}")
     public ResponseEntity<UserResponseDTO> updateUserRole(
-            @PathVariable UUID id,
+            @PathVariable String email,
             @RequestBody UserUpdateRoleRequestDTO dto,
             Authentication authentication) {
-        User updatedUserRole = adminService.updateUserRole(id, dto, authentication);
+        User updatedUserRole = adminService.updateUserRole(email, dto, authentication);
         return ResponseEntity.ok(userMapper.toResponse(updatedUserRole));
     }
 }

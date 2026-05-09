@@ -14,7 +14,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/managers")
@@ -40,11 +39,11 @@ public class ManagerController {
         return ResponseEntity.ok(driverMapper.toResponseList(availableDrivers));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{email}")
     public ResponseEntity<DriverProfileResponseDTO> getDriver(
-            @PathVariable UUID id,
+            @PathVariable String email,
             Authentication authentication) {
-        DriverProfile driver = managerService.getDriver(id, authentication);
+        DriverProfile driver = managerService.getDriver(email, authentication);
         return ResponseEntity.ok(driverMapper.toResponse(driver));
     }
 
@@ -56,21 +55,21 @@ public class ManagerController {
         return ResponseEntity.ok(driverMapper.toResponseList(driversByStatus));
     }
 
-    @PutMapping("truck-info/{id}")
+    @PutMapping("truck-info/{email}")
     public ResponseEntity<DriverProfileResponseDTO> updateTruckInfo(
-            @PathVariable UUID id,
+            @PathVariable String email,
             @RequestBody UpdateDriverTruckInfoRequestDTO dto,
             Authentication authentication) {
-        DriverProfile updatedTruckInfo = managerService.updateTruckInfo(id, dto, authentication);
+        DriverProfile updatedTruckInfo = managerService.updateTruckInfo(email, dto, authentication);
         return ResponseEntity.ok(driverMapper.toResponse(updatedTruckInfo));
     }
 
-    @PutMapping("license-number/{id}")
+    @PutMapping("license-number/{email}")
     public ResponseEntity<DriverProfileResponseDTO> updateDriverLicenseNumber(
-            @PathVariable UUID id,
+            @PathVariable String email,
             @RequestBody UpdateDriverLicenseNumberRequestDTO dto,
             Authentication authentication) {
-        DriverProfile updatedLicense = managerService.updateDriverLicenseNumber(id, dto, authentication);
+        DriverProfile updatedLicense = managerService.updateDriverLicenseNumber(email, dto, authentication);
         return ResponseEntity.ok(driverMapper.toResponse(updatedLicense));
     }
 }

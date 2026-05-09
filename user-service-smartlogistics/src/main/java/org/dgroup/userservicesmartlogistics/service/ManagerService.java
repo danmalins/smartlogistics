@@ -16,13 +16,13 @@ public interface ManagerService {
 
     List<DriverProfile> getAvailableDrivers(Authentication authentication);
 
-    DriverProfile getDriver(UUID driverId, Authentication authentication);
+    DriverProfile getDriver(String email, Authentication authentication);
 
     List<DriverProfile> getDriversByStatus(DriverStatus status, Authentication authentication);
 
-    DriverProfile updateTruckInfo(UUID id, UpdateDriverTruckInfoRequestDTO request,
+    DriverProfile updateTruckInfo(String email, UpdateDriverTruckInfoRequestDTO request,
             Authentication authentication
     );
 
-    DriverProfile updateDriverLicenseNumber(UUID id, UpdateDriverLicenseNumberRequestDTO request, Authentication authentication);
+    DriverProfile updateDriverLicenseNumber(String email, UpdateDriverLicenseNumberRequestDTO request, Authentication authentication);
 }

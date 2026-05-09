@@ -83,10 +83,10 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
-    public DriverProfile getDriver(UUID driverId, Authentication authentication) {
+    public DriverProfile getDriver(String email, Authentication authentication) {
         if (!isManager(authentication) && !isAdmin(authentication))
             throw new CustomAccessDeniedException("Only manager or admin can get driver profile");
-        return driverProfileRepository.findById(driverId)
+        return driverProfileRepository.findByUserEmail(email)
                 .orElseThrow(() -> new DriverNotFoundException("Driver not found"));
     }
 
@@ -98,13 +98,13 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
-    public DriverProfile updateTruckInfo(UUID id, UpdateDriverTruckInfoRequestDTO request,
+    public DriverProfile updateTruckInfo(String email, UpdateDriverTruckInfoRequestDTO request,
                                          Authentication authentication) {
 
         if(!isManager(authentication) && !isAdmin(authentication))
             throw new CustomAccessDeniedException("Only manager or admin can update driver truck info.");
 
-        DriverProfile driver = driverProfileRepository.findById(id)
+        DriverProfile driver = driverProfileRepository.findByUserEmail(email)
                 .orElseThrow(() -> new RuntimeException("Driver not found"));
 
         driver.setTruckType(request.getTruckType());
@@ -115,11 +115,11 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
-    public DriverProfile updateDriverLicenseNumber(UUID id, UpdateDriverLicenseNumberRequestDTO request, Authentication authentication) {
+    public DriverProfile updateDriverLicenseNumber(String email, UpdateDriverLicenseNumberRequestDTO request, Authentication authentication) {
         if(!isManager(authentication) && !isAdmin(authentication))
             throw new CustomAccessDeniedException("Only manager or admin can update driver license number.");
 
-        DriverProfile driver = driverProfileRepository.findById(id)
+        DriverProfile driver = driverProfileRepository.findByUserEmail(email)
                 .orElseThrow(() -> new RuntimeException("Driver not found"));
 
         driver.setDriverLicenseNumber(request.getDriverLicenseNumber());

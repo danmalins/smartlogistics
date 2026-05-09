@@ -12,8 +12,6 @@ import java.util.UUID;
 @Builder
 public class ManagerProfileResponseDTO {
 
-    UUID id;
-
     String email;
 
     String firstName;

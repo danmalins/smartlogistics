@@ -26,9 +26,9 @@ public class UserServiceImpl implements UserService{
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public User updateUserFirstnameAndLastname(UUID id, UserFirstnameAndLastnameUpdateDTO dto, Authentication authentication) {
-        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(
-                "User with id '" + id + "' not found."));
+    public User updateUserFirstnameAndLastname(String email, UserFirstnameAndLastnameUpdateDTO dto, Authentication authentication) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(
+                "User with email '" + email + "' not found."));
 
         if (!isAdmin(authentication) && !user.getEmail().equals(authentication.getName()))
             throw new CustomAccessDeniedException("You can only update your own profile.");
@@ -41,9 +41,9 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User updateUserPassword(UUID id, UserUpdatePasswordRequestDTO dto, Authentication authentication) {
-        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(
-                "User with id '" + id + "' not found."));
+    public User updateUserPassword(String email, UserUpdatePasswordRequestDTO dto, Authentication authentication) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(
+                "User with email '" + email + "' not found."));
 
         if (!isAdmin(authentication) && !user.getEmail().equals(authentication.getName()))
             throw new CustomAccessDeniedException("You can only update your own profile.");
@@ -59,9 +59,9 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User updateUserPhoneNumber(UUID id, UserUpdatePhoneNumberRequestDTO dto, Authentication authentication) {
-        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(
-                "User with id '" + id + "' not found"));
+    public User updateUserPhoneNumber(String email, UserUpdatePhoneNumberRequestDTO dto, Authentication authentication) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(
+                "User with email '" + email + "' not found"));
 
         if (!isAdmin(authentication) && !user.getEmail().equals(authentication.getName()))
             throw new CustomAccessDeniedException("You can only update your own profile.");

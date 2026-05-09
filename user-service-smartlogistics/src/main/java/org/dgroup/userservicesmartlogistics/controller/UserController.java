@@ -12,8 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
-
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -21,30 +19,30 @@ public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
 
-    @PutMapping("first-and-last-name/{id}")
+    @PutMapping("first-and-last-name/{email}")
     public ResponseEntity<UserResponseDTO> updateUserFirstnameAndLastname(
-            @PathVariable UUID id,
+            @PathVariable String email,
             @RequestBody UserFirstnameAndLastnameUpdateDTO dto,
             Authentication authentication) {
-        User updatedUser = userService.updateUserFirstnameAndLastname(id, dto, authentication);
+        User updatedUser = userService.updateUserFirstnameAndLastname(email, dto, authentication);
         return ResponseEntity.ok(userMapper.toResponse(updatedUser));
     }
 
-    @PutMapping("password/{id}")
+    @PutMapping("password/{email}")
     public ResponseEntity<UserResponseDTO> updateUserPassword(
-            @PathVariable UUID id,
+            @PathVariable String email,
             @RequestBody UserUpdatePasswordRequestDTO dto,
             Authentication authentication) {
-        User updatedUser = userService.updateUserPassword(id, dto, authentication);
+        User updatedUser = userService.updateUserPassword(email, dto, authentication);
         return ResponseEntity.ok(userMapper.toResponse(updatedUser));
     }
 
-    @PutMapping("phone/{id}")
+    @PutMapping("phone/{email}")
     public ResponseEntity<UserResponseDTO> updateUserPhoneNumber(
-            @PathVariable UUID id,
+            @PathVariable String email,
             @RequestBody UserUpdatePhoneNumberRequestDTO dto,
             Authentication authentication) {
-        User updatedUser = userService.updateUserPhoneNumber(id, dto, authentication);
+        User updatedUser = userService.updateUserPhoneNumber(email, dto, authentication);
         return ResponseEntity.ok(userMapper.toResponse(updatedUser));
     }
 

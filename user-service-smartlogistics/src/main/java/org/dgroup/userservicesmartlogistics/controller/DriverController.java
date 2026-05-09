@@ -6,7 +6,6 @@ import org.dgroup.userservicesmartlogistics.dto.request.UpdateDriverStatusReques
 import org.dgroup.userservicesmartlogistics.dto.response.DriverProfileResponseDTO;
 import org.dgroup.userservicesmartlogistics.mapper.DriverMapper;
 import org.dgroup.userservicesmartlogistics.model.DriverProfile;
-import org.dgroup.userservicesmartlogistics.model.DriverStatus;
 import org.dgroup.userservicesmartlogistics.service.DriverService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

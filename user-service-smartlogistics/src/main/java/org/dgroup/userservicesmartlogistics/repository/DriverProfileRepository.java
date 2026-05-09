@@ -23,7 +23,7 @@ public interface DriverProfileRepository extends JpaRepository<DriverProfile, UU
     List<DriverProfile> findByStatus (DriverStatus status);
 
     @Query(value = """
-    SELECT * FROM driver_profile d
+    SELECT * FROM driver_profiles d
     ORDER BY (
         6371 * acos(
             cos(radians(:latitude)) *

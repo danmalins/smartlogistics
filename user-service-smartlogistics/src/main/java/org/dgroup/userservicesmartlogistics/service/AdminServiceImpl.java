@@ -10,6 +10,7 @@ import org.dgroup.userservicesmartlogistics.model.User;
 import org.dgroup.userservicesmartlogistics.model.UserRole;
 import org.dgroup.userservicesmartlogistics.repository.ManagerProfileRepository;
 import org.dgroup.userservicesmartlogistics.repository.UserRepository;
+import org.dgroup.userservicesmartlogistics.repository.VerificationTokenRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +28,7 @@ public class AdminServiceImpl implements AdminService  {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ManagerProfileRepository managerProfileRepository;
+    private final VerificationTokenRepository verificationTokenRepository;
 
     @Override
     public ManagerProfile createManager(CreateManagerRequestDTO dto, Authentication authentication) {
@@ -46,14 +48,15 @@ public class AdminServiceImpl implements AdminService  {
                 .lastName(dto.getLastName())
                 .phone(dto.getPhone())
                 .enabled(true) // менеджеров можно сразу активировать
+                .verified(true)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
 
-        userRepository.save(user);
+        User savedUser = userRepository.saveAndFlush(user);
 
         ManagerProfile manager = ManagerProfile.builder()
-                .user(user)
+                .user(savedUser)
                 .department(dto.getDepartment())
                 .employeeNumber(dto.getEmployeeNumber())
                 .createdAt(LocalDateTime.now())
@@ -70,48 +73,49 @@ public class AdminServiceImpl implements AdminService  {
     }
 
     @Override
-    public User getUser(UUID userId, Authentication authentication) {
+    public User getUser(String email, Authentication authentication) {
         if (!isAdmin(authentication))
-            throw new CustomAccessDeniedException("Only admins can access user by id");
-        return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(
-                "User with id '" + userId + "' not found."));
+            throw new CustomAccessDeniedException("Only admins can access user by email");
+        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(
+                "User with id '" + email + "' not found."));
     }
 
     @Override
-    public User blockUser(UUID userId, Authentication authentication) {
+    public User blockUser(String email, Authentication authentication) {
         if (!isAdmin(authentication))
-            throw new CustomAccessDeniedException("Only admins can block user by id");
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(
-                "User with id '" + userId + "' not found."));
+            throw new CustomAccessDeniedException("Only admins can block user by email");
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(
+                "User with email '" + email + "' not found."));
         user.setEnabled(false);
         return userRepository.save(user);
     }
 
     @Override
-    public User unblockUser(UUID userId, Authentication authentication) {
+    public User unblockUser(String email, Authentication authentication) {
         if (!isAdmin(authentication))
-            throw new CustomAccessDeniedException("Only admins can unblock user by id");
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(
-                "User with id '" + userId + "' not found."));
+            throw new CustomAccessDeniedException("Only admins can unblock user by email");
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(
+                "User with id '" + email + "' not found."));
         user.setEnabled(true);
         return userRepository.save(user);
     }
 
     @Override
-    public void deleteUser(UUID userId, Authentication authentication) {
+    public void deleteUser(String email, Authentication authentication) {
         if (!isAdmin(authentication))
             throw new CustomAccessDeniedException("Only admins can delete user");
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(
-                "User with id '" + userId + "' not found."));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(
+                "User with id '" + email + "' not found."));
+        verificationTokenRepository.deleteByUser(user);
         userRepository.delete(user);
     }
 
     @Override
-    public User updateUserRole(UUID userId, UserUpdateRoleRequestDTO dto, Authentication authentication) {
+    public User updateUserRole(String email, UserUpdateRoleRequestDTO dto, Authentication authentication) {
         if (!isAdmin(authentication))
             throw new CustomAccessDeniedException("Only admins can change user role");
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(
-                "User with id '" + userId + "' not found."));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(
+                "User with id '" + email + "' not found."));
         user.setRole(dto.getRole());
         return userRepository.save(user);
     }

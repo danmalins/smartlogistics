@@ -22,7 +22,7 @@ public class DriverProfile {
     UUID id;
 
     @OneToOne
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    @JoinColumn(name = "user_email", nullable = false, unique = true)
     User user;
 
     @Column(nullable = false)
@@ -54,5 +54,4 @@ public class DriverProfile {
 
     @Column(nullable = false)
     LocalDateTime createdAt;
-
 }

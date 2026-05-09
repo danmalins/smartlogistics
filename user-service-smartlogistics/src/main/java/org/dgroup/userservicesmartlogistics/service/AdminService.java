@@ -13,15 +13,15 @@ import java.util.UUID;
 public interface AdminService {
     List<User> getAllUsers(Authentication authentication);
 
-    User getUser(UUID userId, Authentication authentication);
+    User getUser(String email, Authentication authentication);
 
     ManagerProfile createManager(CreateManagerRequestDTO dto, Authentication authentication);
 
-    User blockUser(UUID userId, Authentication authentication);
+    User blockUser(String email, Authentication authentication);
 
-    User unblockUser(UUID userId, Authentication authentication);
+    User unblockUser(String email, Authentication authentication);
 
-    void deleteUser(UUID userId, Authentication authentication);
+    void deleteUser(String email, Authentication authentication);
 
-    User updateUserRole(UUID userId, UserUpdateRoleRequestDTO dto, Authentication authentication);
+    User updateUserRole(String email, UserUpdateRoleRequestDTO dto, Authentication authentication);
 }

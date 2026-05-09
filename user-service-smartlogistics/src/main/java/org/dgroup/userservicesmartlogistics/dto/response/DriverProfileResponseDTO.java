@@ -13,8 +13,6 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class DriverProfileResponseDTO {
 
-    UUID id;
-
     String email;
 
     String firstName;

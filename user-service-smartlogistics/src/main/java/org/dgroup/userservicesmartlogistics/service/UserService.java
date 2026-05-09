@@ -10,9 +10,9 @@ import java.util.UUID;
 
 public interface UserService {
 
-    User updateUserFirstnameAndLastname(UUID id, UserFirstnameAndLastnameUpdateDTO userFirstnameAndLastnameUpdateDTO, Authentication authentication);
+    User updateUserFirstnameAndLastname(String email, UserFirstnameAndLastnameUpdateDTO userFirstnameAndLastnameUpdateDTO, Authentication authentication);
 
-    User updateUserPassword(UUID id, UserUpdatePasswordRequestDTO updatePasswordRequestDTO, Authentication authentication);
+    User updateUserPassword(String email, UserUpdatePasswordRequestDTO updatePasswordRequestDTO, Authentication authentication);
 
-    User updateUserPhoneNumber(UUID id, UserUpdatePhoneNumberRequestDTO userUpdatePhoneNumberRequestDTO, Authentication authentication);
+    User updateUserPhoneNumber(String email, UserUpdatePhoneNumberRequestDTO userUpdatePhoneNumberRequestDTO, Authentication authentication);
 }

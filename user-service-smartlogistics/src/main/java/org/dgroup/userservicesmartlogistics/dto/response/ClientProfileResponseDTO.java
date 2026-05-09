@@ -13,8 +13,6 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ClientProfileResponseDTO {
 
-    UUID id;
-
     String email;
 
     String firstName;

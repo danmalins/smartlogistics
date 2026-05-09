@@ -14,8 +14,6 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserResponseDTO {
 
-    UUID id;
-
     String email;
 
     String firstName;

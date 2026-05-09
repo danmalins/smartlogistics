@@ -17,10 +17,11 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
 
-    @Id
-    @GeneratedValue
-    UUID id;
+//    @Id
+//    @GeneratedValue
+//    UUID id;
 
+    @Id
     @Column(nullable = false, unique = true)
     String email;
 
