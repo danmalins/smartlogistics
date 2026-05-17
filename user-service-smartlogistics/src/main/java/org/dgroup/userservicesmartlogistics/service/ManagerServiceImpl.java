@@ -5,9 +5,11 @@ import lombok.AllArgsConstructor;
 import org.dgroup.userservicesmartlogistics.dto.manager.CreateDriverRequestDTO;
 import org.dgroup.userservicesmartlogistics.dto.request.UpdateDriverLicenseNumberRequestDTO;
 import org.dgroup.userservicesmartlogistics.dto.request.UpdateDriverTruckInfoRequestDTO;
+import org.dgroup.userservicesmartlogistics.exception.ClientNotFoundException;
 import org.dgroup.userservicesmartlogistics.exception.CustomAccessDeniedException;
 import org.dgroup.userservicesmartlogistics.exception.DriverNotFoundException;
 import org.dgroup.userservicesmartlogistics.model.*;
+import org.dgroup.userservicesmartlogistics.repository.ClientProfileRepository;
 import org.dgroup.userservicesmartlogistics.repository.DriverProfileRepository;
 import org.dgroup.userservicesmartlogistics.repository.ManagerProfileRepository;
 import org.dgroup.userservicesmartlogistics.repository.UserRepository;
@@ -27,6 +29,7 @@ public class ManagerServiceImpl implements ManagerService {
 
     private final ManagerProfileRepository managerProfileRepository;
     private final DriverProfileRepository driverProfileRepository;
+    private final ClientProfileRepository clientProfileRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -56,10 +59,10 @@ public class ManagerServiceImpl implements ManagerService {
                 .updatedAt(LocalDateTime.now())
                 .build();
 
-        userRepository.save(user);
+        User savedUser = userRepository.saveAndFlush(user);
 
         DriverProfile driver = DriverProfile.builder()
-                .user(user)
+                .user(savedUser)
                 .driverLicenseNumber(dto.getDriverLicenseNumber())
                 .truckType(dto.getTruckType())
                 .truckCapacityWeight(dto.getTruckCapacityWeight())
@@ -73,6 +76,28 @@ public class ManagerServiceImpl implements ManagerService {
                 .build();
 
         return driverProfileRepository.save(driver);
+    }
+
+    @Override
+    public ClientProfile getClient(String email, Authentication authentication) {
+        if (!isManager(authentication) && !isAdmin(authentication))
+            throw new CustomAccessDeniedException("Only manager or admin can get driver profile");
+        return clientProfileRepository.findByUserEmail(email)
+                .orElseThrow(() -> new ClientNotFoundException("Client not found"));
+    }
+
+    @Override
+    public List<ClientProfile> getAllClients(Authentication authentication) {
+        if (!isManager(authentication) && !isAdmin(authentication))
+            throw new CustomAccessDeniedException("Only manager or admin can get client profiles");
+        return clientProfileRepository.findAll();
+    }
+
+    @Override
+    public List<DriverProfile> getAllDrivers(Authentication authentication) {
+        if (!isManager(authentication) && !isAdmin(authentication))
+            throw new CustomAccessDeniedException("Only manager or admin can get driver profiles");
+        return driverProfileRepository.findAll();
     }
 
     @Override

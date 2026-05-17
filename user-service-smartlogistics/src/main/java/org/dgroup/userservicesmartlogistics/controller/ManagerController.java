@@ -4,10 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.dgroup.userservicesmartlogistics.dto.manager.CreateDriverRequestDTO;
 import org.dgroup.userservicesmartlogistics.dto.request.UpdateDriverLicenseNumberRequestDTO;
 import org.dgroup.userservicesmartlogistics.dto.request.UpdateDriverTruckInfoRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.response.ClientProfileResponseDTO;
 import org.dgroup.userservicesmartlogistics.dto.response.DriverProfileResponseDTO;
+import org.dgroup.userservicesmartlogistics.dto.response.UserResponseDTO;
+import org.dgroup.userservicesmartlogistics.mapper.ClientMapper;
 import org.dgroup.userservicesmartlogistics.mapper.DriverMapper;
+import org.dgroup.userservicesmartlogistics.model.ClientProfile;
 import org.dgroup.userservicesmartlogistics.model.DriverProfile;
 import org.dgroup.userservicesmartlogistics.model.DriverStatus;
+import org.dgroup.userservicesmartlogistics.model.User;
 import org.dgroup.userservicesmartlogistics.service.ManagerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -21,6 +26,7 @@ import java.util.List;
 public class ManagerController {
     private final ManagerService managerService;
     private final DriverMapper driverMapper;
+    private final ClientMapper clientMapper;
 
     @PostMapping
     public ResponseEntity<DriverProfileResponseDTO> createDriver(
@@ -28,6 +34,28 @@ public class ManagerController {
             Authentication authentication) {
         DriverProfile createDriver = managerService.createDriver(dto, authentication);
         return ResponseEntity.ok(driverMapper.toResponse(createDriver));
+    }
+
+    @GetMapping("/client/{email}")
+    public ResponseEntity<ClientProfileResponseDTO> getClient(
+            @PathVariable String email,
+            Authentication authentication) {
+        ClientProfile client = managerService.getClient(email, authentication);
+        return ResponseEntity.ok(clientMapper.toResponse(client));
+    }
+
+    @GetMapping("/clients")
+    public ResponseEntity<List<ClientProfileResponseDTO>> getAllClients(
+            Authentication authentication) {
+        List<ClientProfile> clients = managerService.getAllClients(authentication);
+        return ResponseEntity.ok(clientMapper.toResponseList(clients));
+    }
+
+    @GetMapping("/drivers")
+    public ResponseEntity<List<DriverProfileResponseDTO>> getAllDrivers(
+            Authentication authentication) {
+        List<DriverProfile> drivers = managerService.getAllDrivers(authentication);
+        return ResponseEntity.ok(driverMapper.toResponseList(drivers));
     }
 
     @GetMapping("/availible-drivers")
@@ -39,7 +67,7 @@ public class ManagerController {
         return ResponseEntity.ok(driverMapper.toResponseList(availableDrivers));
     }
 
-    @GetMapping("/{email}")
+    @GetMapping("/driver/{email}")
     public ResponseEntity<DriverProfileResponseDTO> getDriver(
             @PathVariable String email,
             Authentication authentication) {

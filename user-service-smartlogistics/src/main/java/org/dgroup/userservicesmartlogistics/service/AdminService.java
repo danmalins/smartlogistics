@@ -1,5 +1,6 @@
 package org.dgroup.userservicesmartlogistics.service;
 
+import org.dgroup.userservicesmartlogistics.dto.admin.CreateAdminRequestDTO;
 import org.dgroup.userservicesmartlogistics.dto.admin.CreateManagerRequestDTO;
 import org.dgroup.userservicesmartlogistics.dto.admin.UserUpdateRoleRequestDTO;
 import org.dgroup.userservicesmartlogistics.model.ManagerProfile;
@@ -14,6 +15,8 @@ public interface AdminService {
     List<User> getAllUsers(Authentication authentication);
 
     User getUser(String email, Authentication authentication);
+
+    User createAdmin(CreateAdminRequestDTO dto, Authentication authentication);
 
     ManagerProfile createManager(CreateManagerRequestDTO dto, Authentication authentication);
 

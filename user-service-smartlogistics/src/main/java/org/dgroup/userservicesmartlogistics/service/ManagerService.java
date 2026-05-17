@@ -3,6 +3,7 @@ package org.dgroup.userservicesmartlogistics.service;
 import org.dgroup.userservicesmartlogistics.dto.manager.CreateDriverRequestDTO;
 import org.dgroup.userservicesmartlogistics.dto.request.UpdateDriverLicenseNumberRequestDTO;
 import org.dgroup.userservicesmartlogistics.dto.request.UpdateDriverTruckInfoRequestDTO;
+import org.dgroup.userservicesmartlogistics.model.ClientProfile;
 import org.dgroup.userservicesmartlogistics.model.DriverProfile;
 import org.dgroup.userservicesmartlogistics.model.DriverStatus;
 import org.springframework.security.core.Authentication;
@@ -13,6 +14,12 @@ import java.util.UUID;
 public interface ManagerService {
 
     DriverProfile createDriver(CreateDriverRequestDTO dto, Authentication authentication);
+
+    ClientProfile getClient(String email, Authentication authentication);
+
+    List<ClientProfile> getAllClients(Authentication authentication);
+
+    List<DriverProfile> getAllDrivers(Authentication authentication);
 
     List<DriverProfile> getAvailableDrivers(Authentication authentication);
 

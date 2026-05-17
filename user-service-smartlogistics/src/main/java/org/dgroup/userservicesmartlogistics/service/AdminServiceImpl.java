@@ -1,6 +1,7 @@
 package org.dgroup.userservicesmartlogistics.service;
 
 import lombok.RequiredArgsConstructor;
+import org.dgroup.userservicesmartlogistics.dto.admin.CreateAdminRequestDTO;
 import org.dgroup.userservicesmartlogistics.dto.admin.CreateManagerRequestDTO;
 import org.dgroup.userservicesmartlogistics.dto.admin.UserUpdateRoleRequestDTO;
 import org.dgroup.userservicesmartlogistics.exception.CustomAccessDeniedException;
@@ -78,6 +79,31 @@ public class AdminServiceImpl implements AdminService  {
             throw new CustomAccessDeniedException("Only admins can access user by email");
         return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(
                 "User with id '" + email + "' not found."));
+    }
+
+    @Override
+    public User createAdmin(CreateAdminRequestDTO dto, Authentication authentication) {
+        if (!isAdmin(authentication))
+            throw new CustomAccessDeniedException("Only admin can create another admin");
+
+        if (userRepository.existsByEmail(dto.getEmail())) {
+            throw new RuntimeException("Email already exists");
+        }
+
+        User user = User.builder()
+                .email(dto.getEmail())
+                .password(passwordEncoder.encode(dto.getPassword()))
+                .role(UserRole.ROLE_ADMIN)
+                .firstName(dto.getFirstName())
+                .lastName(dto.getLastName())
+                .phone(dto.getPhone())
+                .enabled(true) // менеджеров можно сразу активировать
+                .verified(true)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+
+        return userRepository.save(user);
     }
 
     @Override

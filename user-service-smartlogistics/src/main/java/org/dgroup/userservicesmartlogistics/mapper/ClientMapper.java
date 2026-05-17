@@ -1,9 +1,13 @@
 package org.dgroup.userservicesmartlogistics.mapper;
 
 import org.dgroup.userservicesmartlogistics.dto.response.ClientProfileResponseDTO;
+import org.dgroup.userservicesmartlogistics.dto.response.DriverProfileResponseDTO;
 import org.dgroup.userservicesmartlogistics.model.ClientProfile;
+import org.dgroup.userservicesmartlogistics.model.DriverProfile;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ClientMapper {
@@ -14,4 +18,5 @@ public interface ClientMapper {
     @Mapping(source = "user.phone", target = "phone")
     ClientProfileResponseDTO toResponse(ClientProfile clientProfile);
 
+    List<ClientProfileResponseDTO> toResponseList(List<ClientProfile> clients);
 }

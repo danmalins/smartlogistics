@@ -1,6 +1,7 @@
 package org.dgroup.userservicesmartlogistics.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.dgroup.userservicesmartlogistics.dto.admin.CreateAdminRequestDTO;
 import org.dgroup.userservicesmartlogistics.dto.admin.CreateManagerRequestDTO;
 import org.dgroup.userservicesmartlogistics.dto.admin.UserUpdateRoleRequestDTO;
 import org.dgroup.userservicesmartlogistics.dto.response.ManagerProfileResponseDTO;
@@ -41,12 +42,20 @@ public class AdminController {
         return ResponseEntity.ok(userMapper.toResponse(user));
     }
 
-    @PostMapping
+    @PostMapping("create-manager")
     public ResponseEntity<ManagerProfileResponseDTO> createManager(
             @RequestBody CreateManagerRequestDTO dto,
             Authentication authentication) {
         ManagerProfile managerProfile = adminService.createManager(dto, authentication);
         return ResponseEntity.ok(managerMapper.toResponse(managerProfile));
+    }
+
+    @PostMapping("create-admin")
+    public ResponseEntity<UserResponseDTO> createAdmin(
+            @RequestBody CreateAdminRequestDTO dto,
+            Authentication authentication) {
+        User admin = adminService.createAdmin(dto, authentication);
+        return ResponseEntity.ok(userMapper.toResponse(admin));
     }
 
     @PutMapping("block/{email}")
@@ -73,7 +82,7 @@ public class AdminController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("role/{email}")
+    @PutMapping("role/{email}") //unnecessary for now
     public ResponseEntity<UserResponseDTO> updateUserRole(
             @PathVariable String email,
             @RequestBody UserUpdateRoleRequestDTO dto,
