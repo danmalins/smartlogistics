@@ -5,9 +5,11 @@ import lombok.AllArgsConstructor;
 import org.dgroup.userservicesmartlogistics.dto.request.driver.CreateDriverRequestDTO;
 import org.dgroup.userservicesmartlogistics.dto.request.driver.UpdateDriverLicenseNumberRequestDTO;
 import org.dgroup.userservicesmartlogistics.dto.request.driver.UpdateDriverTruckInfoRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.request.manager.CreateManagerRequestDTO;
 import org.dgroup.userservicesmartlogistics.exception.ClientNotFoundException;
 import org.dgroup.userservicesmartlogistics.exception.CustomAccessDeniedException;
 import org.dgroup.userservicesmartlogistics.exception.DriverNotFoundException;
+import org.dgroup.userservicesmartlogistics.exception.UserNotFoundException;
 import org.dgroup.userservicesmartlogistics.model.*;
 import org.dgroup.userservicesmartlogistics.repository.ClientProfileRepository;
 import org.dgroup.userservicesmartlogistics.repository.DriverProfileRepository;
@@ -28,136 +30,62 @@ import java.util.List;
 public class ManagerServiceImpl implements ManagerService {
 
     private final ManagerProfileRepository managerProfileRepository;
-    private final DriverProfileRepository driverProfileRepository;
-    private final ClientProfileRepository clientProfileRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Override
+    public List<ManagerProfile> getAllManagers(Authentication authentication) {
+        if (!isAdmin(authentication))
+            throw new CustomAccessDeniedException("Only admins can access all managers");
+        return managerProfileRepository.findAll();
+    }
 
     @Override
-    public DriverProfile createDriver(CreateDriverRequestDTO dto, Authentication authentication) {
+    public ManagerProfile getManager(String email, Authentication authentication) {
+        if (!isAdmin(authentication))
+            throw new CustomAccessDeniedException("Only admins can access manager by email");
+        return managerProfileRepository.findByUserEmail(email).orElseThrow(() -> new UserNotFoundException(
+                "User with id '" + email + "' not found."));
+    }
 
-        // проверка что это менеджер
-        if (!isManager(authentication) && !isAdmin(authentication))
-            throw new CustomAccessDeniedException("Only manager or admin can create driver");
+    @Override
+    public ManagerProfile createManager(CreateManagerRequestDTO dto, Authentication authentication) {
 
-        if (userRepository.existsByEmail(dto.getEmail()))
+        if (!isAdmin(authentication))
+            throw new CustomAccessDeniedException("Only admin can create manager");
+
+        if (userRepository.existsByEmail(dto.getEmail())) {
             throw new RuntimeException("Email already exists");
-
-        if (driverProfileRepository.existsByDriverLicenseNumber(dto.getDriverLicenseNumber()))
-            throw new RuntimeException("Driver license already exists");
+        }
 
         User user = User.builder()
                 .email(dto.getEmail())
                 .password(passwordEncoder.encode(dto.getPassword()))
-                .role(UserRole.ROLE_DRIVER)
+                .role(UserRole.ROLE_MANAGER)
                 .firstName(dto.getFirstName())
                 .lastName(dto.getLastName())
                 .phone(dto.getPhone())
-                .enabled(true)
+                .enabled(true) // менеджеров можно сразу активировать
+                .verified(true)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
 
         User savedUser = userRepository.saveAndFlush(user);
 
-        DriverProfile driver = DriverProfile.builder()
+        ManagerProfile manager = ManagerProfile.builder()
                 .user(savedUser)
-                .driverLicenseNumber(dto.getDriverLicenseNumber())
-                .status(DriverStatus.OFFLINE)
-                .rating(0.0)
-                .completedDeliveries(0)
-                .currentLatitude(BigDecimal.valueOf(0.0))
-                .currentLongitude(BigDecimal.valueOf(0.0))
+                .department(dto.getDepartment())
+                .employeeNumber(dto.getEmployeeNumber())
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        return driverProfileRepository.save(driver);
-    }
-
-    @Override
-    public ClientProfile getClient(String email, Authentication authentication) {
-        if (!isManager(authentication) && !isAdmin(authentication))
-            throw new CustomAccessDeniedException("Only manager or admin can get driver profile");
-        return clientProfileRepository.findByUserEmail(email)
-                .orElseThrow(() -> new ClientNotFoundException("Client not found"));
-    }
-
-    @Override
-    public List<ClientProfile> getAllClients(Authentication authentication) {
-        if (!isManager(authentication) && !isAdmin(authentication))
-            throw new CustomAccessDeniedException("Only manager or admin can get client profiles");
-        return clientProfileRepository.findAll();
-    }
-
-    @Override
-    public List<DriverProfile> getAllDrivers(Authentication authentication) {
-        if (!isManager(authentication) && !isAdmin(authentication))
-            throw new CustomAccessDeniedException("Only manager or admin can get driver profiles");
-        return driverProfileRepository.findAll();
-    }
-
-    @Override
-    public List<DriverProfile> getAvailableDrivers(Authentication authentication) {
-        if (!isManager(authentication) && !isAdmin(authentication))
-            throw new CustomAccessDeniedException("Only manager or admin can get available drivers");
-        return driverProfileRepository.findByStatus(DriverStatus.AVAILABLE);
-    }
-
-    @Override
-    public DriverProfile getDriver(String email, Authentication authentication) {
-        if (!isManager(authentication) && !isAdmin(authentication))
-            throw new CustomAccessDeniedException("Only manager or admin can get driver profile");
-        return driverProfileRepository.findByUserEmail(email)
-                .orElseThrow(() -> new DriverNotFoundException("Driver not found"));
-    }
-
-    @Override
-    public List<DriverProfile> getDriversByStatus(DriverStatus status, Authentication authentication) {
-        if (!isManager(authentication) && !isAdmin(authentication))
-            throw new CustomAccessDeniedException("Only manager or admin can get driver by status");
-        return driverProfileRepository.findByStatus(status);
-    }
-
-//    @Override
-//    public DriverProfile updateTruckInfo(String email, UpdateDriverTruckInfoRequestDTO request,
-//                                         Authentication authentication) {
-//
-//        if(!isManager(authentication) && !isAdmin(authentication))
-//            throw new CustomAccessDeniedException("Only manager or admin can update driver truck info.");
-//
-//        DriverProfile driver = driverProfileRepository.findByUserEmail(email)
-//                .orElseThrow(() -> new RuntimeException("Driver not found"));
-//
-//        driver.setTruckType(request.getTruckType());
-//        driver.setTruckCapacityWeight(request.getTruckCapacityWeight());
-//        driver.setTruckCapacityVolume(request.getTruckCapacityVolume());
-//
-//        return driverProfileRepository.save(driver);
-//    }
-
-    @Override
-    public DriverProfile updateDriverLicenseNumber(String email, UpdateDriverLicenseNumberRequestDTO request, Authentication authentication) {
-        if(!isManager(authentication) && !isAdmin(authentication))
-            throw new CustomAccessDeniedException("Only manager or admin can update driver license number.");
-
-        DriverProfile driver = driverProfileRepository.findByUserEmail(email)
-                .orElseThrow(() -> new RuntimeException("Driver not found"));
-
-        driver.setDriverLicenseNumber(request.getDriverLicenseNumber());
-
-        return driverProfileRepository.save(driver);
+        return managerProfileRepository.save(manager);
     }
 
     private boolean isAdmin(Authentication authentication) {
         return authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .anyMatch(role -> role.equals("ROLE_ADMIN"));
-    }
-
-    private boolean isManager(Authentication authentication) {
-        return authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .anyMatch(role -> role.equals("ROLE_MANAGER"));
     }
 }

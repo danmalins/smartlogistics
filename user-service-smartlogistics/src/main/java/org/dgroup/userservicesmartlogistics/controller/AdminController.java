@@ -11,6 +11,8 @@ import org.dgroup.userservicesmartlogistics.mapper.UserMapper;
 import org.dgroup.userservicesmartlogistics.model.ManagerProfile;
 import org.dgroup.userservicesmartlogistics.model.User;
 import org.dgroup.userservicesmartlogistics.service.AdminService;
+import org.dgroup.userservicesmartlogistics.service.ManagerService;
+import org.dgroup.userservicesmartlogistics.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -24,11 +26,13 @@ public class AdminController {
     public final UserMapper userMapper;
     public final AdminService adminService;
     public final ManagerMapper managerMapper;
+    private final UserService userService;
+    private final ManagerService managerService;
 
     @GetMapping
     public ResponseEntity<List<UserResponseDTO>> getAllUsers(
             Authentication authentication) {
-        List<User> users = adminService.getAllUsers(authentication);
+        List<User> users = userService.getAllUsers(authentication);
         return ResponseEntity.ok(userMapper.toResponseList(users));
     }
 
@@ -36,7 +40,7 @@ public class AdminController {
     public ResponseEntity<UserResponseDTO> getUser(
             @PathVariable String email,
             Authentication authentication) {
-        User user = adminService.getUser(email, authentication);
+        User user = userService.getUser(email, authentication);
         return ResponseEntity.ok(userMapper.toResponse(user));
     }
 
@@ -44,7 +48,7 @@ public class AdminController {
     public ResponseEntity<ManagerProfileResponseDTO> createManager(
             @RequestBody CreateManagerRequestDTO dto,
             Authentication authentication) {
-        ManagerProfile managerProfile = adminService.createManager(dto, authentication);
+        ManagerProfile managerProfile = managerService.createManager(dto, authentication);
         return ResponseEntity.ok(managerMapper.toResponse(managerProfile));
     }
 
@@ -60,7 +64,7 @@ public class AdminController {
     public ResponseEntity<UserResponseDTO> blockUser(
             @PathVariable String email,
             Authentication authentication) {
-        User user = adminService.blockUser(email, authentication);
+        User user = userService.blockUser(email, authentication);
         return ResponseEntity.ok(userMapper.toResponse(user));
     }
 
@@ -68,7 +72,7 @@ public class AdminController {
     ResponseEntity<UserResponseDTO> unblockUser(
             @PathVariable String email,
             Authentication authentication) {
-        User user = adminService.unblockUser(email, authentication);
+        User user = userService.unblockUser(email, authentication);
         return ResponseEntity.ok(userMapper.toResponse(user));
     }
 
@@ -76,7 +80,7 @@ public class AdminController {
     public ResponseEntity<Void> deleteUser(
             @PathVariable String email,
             Authentication authentication) {
-        adminService.deleteUser(email, authentication);
+        userService.deleteUser(email, authentication);
         return ResponseEntity.noContent().build();
     }
 
@@ -85,7 +89,7 @@ public class AdminController {
             @PathVariable String email,
             @RequestBody UserUpdateRoleRequestDTO dto,
             Authentication authentication) {
-        User updatedUserRole = adminService.updateUserRole(email, dto, authentication);
+        User updatedUserRole = userService.updateUserRole(email, dto, authentication);
         return ResponseEntity.ok(userMapper.toResponse(updatedUserRole));
     }
 }

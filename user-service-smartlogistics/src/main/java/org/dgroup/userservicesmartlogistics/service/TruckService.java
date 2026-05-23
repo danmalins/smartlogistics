@@ -1,6 +1,7 @@
 package org.dgroup.userservicesmartlogistics.service;
 
 import org.dgroup.userservicesmartlogistics.dto.request.truck.CreateTruckRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.request.truck.UpdateTruckRequestDTO;
 import org.dgroup.userservicesmartlogistics.model.Truck;
 import org.dgroup.userservicesmartlogistics.model.TruckStatus;
 import org.dgroup.userservicesmartlogistics.model.TruckType;
@@ -22,10 +23,7 @@ public interface TruckService {
     Truck assignDriver(UUID truckId, UUID driverId);
     void unassignDriver(UUID truckId);
     List<Truck> findAvailableTrucks(BigDecimal requiredWeight);
-    List<Truck> findAvailableTrucksByType(
-            TruckType type,
-            BigDecimal requiredWeight
-    );
+    List<Truck> findAvailableTrucksByType(TruckType type, BigDecimal requiredWeight);
     void updateMileage(UUID truckId, BigDecimal distance);
     BigDecimal getMileage(UUID truckId);
     Truck getTruckById(UUID truckId);

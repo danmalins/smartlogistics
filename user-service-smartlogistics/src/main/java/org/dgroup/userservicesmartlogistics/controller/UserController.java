@@ -46,5 +46,4 @@ public class UserController {
         return ResponseEntity.ok(userMapper.toResponse(updatedUser));
     }
 
-
 }
