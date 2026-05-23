@@ -1,4 +1,4 @@
-package org.dgroup.userservicesmartlogistics.dto.admin;
+package org.dgroup.userservicesmartlogistics.dto.request.manager;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,15 +8,16 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CreateAdminRequestDTO {
+public class CreateManagerRequestDTO {
 
     String email;
-
     String password;
 
     String firstName;
-
     String lastName;
-
     String phone;
+
+    String department;
+    String employeeNumber;
+
 }

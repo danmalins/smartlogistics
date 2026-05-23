@@ -6,5 +6,4 @@ import org.springframework.security.core.Authentication;
 public interface ClientService {
 
     ClientProfile getClientProfile(Authentication authentication);
-
 }

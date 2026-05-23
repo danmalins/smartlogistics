@@ -1,9 +1,9 @@
 package org.dgroup.userservicesmartlogistics.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.dgroup.userservicesmartlogistics.dto.auth.AuthResponseDTO;
-import org.dgroup.userservicesmartlogistics.dto.auth.LoginRequestDTO;
-import org.dgroup.userservicesmartlogistics.dto.auth.RegisterClientRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.response.AuthResponseDTO;
+import org.dgroup.userservicesmartlogistics.dto.request.auth.LoginRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.request.auth.RegisterClientRequestDTO;
 import org.dgroup.userservicesmartlogistics.model.ClientProfile;
 
 public interface AuthService {

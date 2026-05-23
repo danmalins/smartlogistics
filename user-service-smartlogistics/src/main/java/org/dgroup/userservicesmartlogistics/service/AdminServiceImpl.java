@@ -1,9 +1,9 @@
 package org.dgroup.userservicesmartlogistics.service;
 
 import lombok.RequiredArgsConstructor;
-import org.dgroup.userservicesmartlogistics.dto.admin.CreateAdminRequestDTO;
-import org.dgroup.userservicesmartlogistics.dto.admin.CreateManagerRequestDTO;
-import org.dgroup.userservicesmartlogistics.dto.admin.UserUpdateRoleRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.request.admin.CreateAdminRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.request.manager.CreateManagerRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.request.user.UserUpdateRoleRequestDTO;
 import org.dgroup.userservicesmartlogistics.exception.CustomAccessDeniedException;
 import org.dgroup.userservicesmartlogistics.exception.UserNotFoundException;
 import org.dgroup.userservicesmartlogistics.model.ManagerProfile;
@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -78,6 +78,21 @@ public class AdminServiceImpl implements AdminService  {
         if (!isAdmin(authentication))
             throw new CustomAccessDeniedException("Only admins can access user by email");
         return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(
+                "User with id '" + email + "' not found."));
+    }
+
+    @Override
+    public List<ManagerProfile> getAllManagers(Authentication authentication) {
+        if (!isAdmin(authentication))
+            throw new CustomAccessDeniedException("Only admins can access all managers");
+        return managerProfileRepository.findAll();
+    }
+
+    @Override
+    public ManagerProfile getManager(String email, Authentication authentication) {
+        if (!isAdmin(authentication))
+            throw new CustomAccessDeniedException("Only admins can access manager by email");
+        return managerProfileRepository.findByUserEmail(email).orElseThrow(() -> new UserNotFoundException(
                 "User with id '" + email + "' not found."));
     }
 

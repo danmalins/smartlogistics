@@ -2,9 +2,9 @@ package org.dgroup.userservicesmartlogistics.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.dgroup.userservicesmartlogistics.dto.request.UserFirstnameAndLastnameUpdateDTO;
-import org.dgroup.userservicesmartlogistics.dto.request.UserUpdatePasswordRequestDTO;
-import org.dgroup.userservicesmartlogistics.dto.request.UserUpdatePhoneNumberRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.request.user.UpdateUserFirstnameAndLastnameRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.request.user.UpdateUserPasswordRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.request.user.UpdateUserPhoneNumberRequestDTO;
 import org.dgroup.userservicesmartlogistics.exception.CustomAccessDeniedException;
 import org.dgroup.userservicesmartlogistics.exception.UserNotFoundException;
 import org.dgroup.userservicesmartlogistics.model.User;
@@ -15,7 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Service
 @Transactional
@@ -26,7 +25,7 @@ public class UserServiceImpl implements UserService{
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public User updateUserFirstnameAndLastname(String email, UserFirstnameAndLastnameUpdateDTO dto, Authentication authentication) {
+    public User updateUserFirstnameAndLastname(String email, UpdateUserFirstnameAndLastnameRequestDTO dto, Authentication authentication) {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(
                 "User with email '" + email + "' not found."));
 
@@ -41,7 +40,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User updateUserPassword(String email, UserUpdatePasswordRequestDTO dto, Authentication authentication) {
+    public User updateUserPassword(String email, UpdateUserPasswordRequestDTO dto, Authentication authentication) {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(
                 "User with email '" + email + "' not found."));
 
@@ -59,7 +58,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User updateUserPhoneNumber(String email, UserUpdatePhoneNumberRequestDTO dto, Authentication authentication) {
+    public User updateUserPhoneNumber(String email, UpdateUserPhoneNumberRequestDTO dto, Authentication authentication) {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(
                 "User with email '" + email + "' not found"));
 

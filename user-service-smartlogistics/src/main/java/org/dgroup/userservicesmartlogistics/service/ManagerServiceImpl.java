@@ -2,9 +2,9 @@ package org.dgroup.userservicesmartlogistics.service;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.dgroup.userservicesmartlogistics.dto.manager.CreateDriverRequestDTO;
-import org.dgroup.userservicesmartlogistics.dto.request.UpdateDriverLicenseNumberRequestDTO;
-import org.dgroup.userservicesmartlogistics.dto.request.UpdateDriverTruckInfoRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.request.driver.CreateDriverRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.request.driver.UpdateDriverLicenseNumberRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.request.driver.UpdateDriverTruckInfoRequestDTO;
 import org.dgroup.userservicesmartlogistics.exception.ClientNotFoundException;
 import org.dgroup.userservicesmartlogistics.exception.CustomAccessDeniedException;
 import org.dgroup.userservicesmartlogistics.exception.DriverNotFoundException;
@@ -18,9 +18,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -64,14 +64,11 @@ public class ManagerServiceImpl implements ManagerService {
         DriverProfile driver = DriverProfile.builder()
                 .user(savedUser)
                 .driverLicenseNumber(dto.getDriverLicenseNumber())
-                .truckType(dto.getTruckType())
-                .truckCapacityWeight(dto.getTruckCapacityWeight())
-                .truckCapacityVolume(dto.getTruckCapacityVolume())
                 .status(DriverStatus.OFFLINE)
                 .rating(0.0)
                 .completedDeliveries(0)
-                .currentLatitude(0.0)
-                .currentLongitude(0.0)
+                .currentLatitude(BigDecimal.valueOf(0.0))
+                .currentLongitude(BigDecimal.valueOf(0.0))
                 .createdAt(LocalDateTime.now())
                 .build();
 
@@ -122,22 +119,22 @@ public class ManagerServiceImpl implements ManagerService {
         return driverProfileRepository.findByStatus(status);
     }
 
-    @Override
-    public DriverProfile updateTruckInfo(String email, UpdateDriverTruckInfoRequestDTO request,
-                                         Authentication authentication) {
-
-        if(!isManager(authentication) && !isAdmin(authentication))
-            throw new CustomAccessDeniedException("Only manager or admin can update driver truck info.");
-
-        DriverProfile driver = driverProfileRepository.findByUserEmail(email)
-                .orElseThrow(() -> new RuntimeException("Driver not found"));
-
-        driver.setTruckType(request.getTruckType());
-        driver.setTruckCapacityWeight(request.getTruckCapacityWeight());
-        driver.setTruckCapacityVolume(request.getTruckCapacityVolume());
-
-        return driverProfileRepository.save(driver);
-    }
+//    @Override
+//    public DriverProfile updateTruckInfo(String email, UpdateDriverTruckInfoRequestDTO request,
+//                                         Authentication authentication) {
+//
+//        if(!isManager(authentication) && !isAdmin(authentication))
+//            throw new CustomAccessDeniedException("Only manager or admin can update driver truck info.");
+//
+//        DriverProfile driver = driverProfileRepository.findByUserEmail(email)
+//                .orElseThrow(() -> new RuntimeException("Driver not found"));
+//
+//        driver.setTruckType(request.getTruckType());
+//        driver.setTruckCapacityWeight(request.getTruckCapacityWeight());
+//        driver.setTruckCapacityVolume(request.getTruckCapacityVolume());
+//
+//        return driverProfileRepository.save(driver);
+//    }
 
     @Override
     public DriverProfile updateDriverLicenseNumber(String email, UpdateDriverLicenseNumberRequestDTO request, Authentication authentication) {

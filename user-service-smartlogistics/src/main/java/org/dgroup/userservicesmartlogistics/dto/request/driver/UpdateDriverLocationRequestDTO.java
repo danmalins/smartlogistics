@@ -1,6 +1,8 @@
-package org.dgroup.userservicesmartlogistics.dto.request;
+package org.dgroup.userservicesmartlogistics.dto.request.driver;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -8,6 +10,6 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UpdateDriverLocationRequestDTO {
-    Double latitude;
-    Double longitude;
+    BigDecimal latitude;
+    BigDecimal longitude;
 }

@@ -1,9 +1,9 @@
 package org.dgroup.userservicesmartlogistics.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.dgroup.userservicesmartlogistics.dto.admin.CreateAdminRequestDTO;
-import org.dgroup.userservicesmartlogistics.dto.admin.CreateManagerRequestDTO;
-import org.dgroup.userservicesmartlogistics.dto.admin.UserUpdateRoleRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.request.admin.CreateAdminRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.request.manager.CreateManagerRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.request.user.UserUpdateRoleRequestDTO;
 import org.dgroup.userservicesmartlogistics.dto.response.ManagerProfileResponseDTO;
 import org.dgroup.userservicesmartlogistics.dto.response.UserResponseDTO;
 import org.dgroup.userservicesmartlogistics.mapper.ManagerMapper;
@@ -11,13 +11,11 @@ import org.dgroup.userservicesmartlogistics.mapper.UserMapper;
 import org.dgroup.userservicesmartlogistics.model.ManagerProfile;
 import org.dgroup.userservicesmartlogistics.model.User;
 import org.dgroup.userservicesmartlogistics.service.AdminService;
-import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/admins")

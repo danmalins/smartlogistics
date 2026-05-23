@@ -1,7 +1,6 @@
 package org.dgroup.userservicesmartlogistics.repository;
 
-import org.dgroup.userservicesmartlogistics.model.ClientProfile;
-import org.dgroup.userservicesmartlogistics.model.DriverProfile;
+import io.netty.util.internal.ObjectPool;
 import org.dgroup.userservicesmartlogistics.model.ManagerProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -12,9 +11,9 @@ import java.util.UUID;
 @Repository
 public interface ManagerProfileRepository extends JpaRepository<ManagerProfile, UUID> {
 
+    Optional<ManagerProfile> findByUserEmail(String email);
 
-
-    Optional<ManagerProfile> findByDepartment (String department);
+    Optional<ManagerProfile> findByDepartment(String department);
 
     Optional<ManagerProfile> findByEmployeeNumber(String employeeNumber);
 

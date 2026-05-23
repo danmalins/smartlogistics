@@ -1,4 +1,4 @@
-package org.dgroup.userservicesmartlogistics.dto.auth;
+package org.dgroup.userservicesmartlogistics.dto.request.auth;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

@@ -1,18 +1,16 @@
 package org.dgroup.userservicesmartlogistics.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.dgroup.userservicesmartlogistics.dto.manager.CreateDriverRequestDTO;
-import org.dgroup.userservicesmartlogistics.dto.request.UpdateDriverLicenseNumberRequestDTO;
-import org.dgroup.userservicesmartlogistics.dto.request.UpdateDriverTruckInfoRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.request.driver.CreateDriverRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.request.driver.UpdateDriverLicenseNumberRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.request.driver.UpdateDriverTruckInfoRequestDTO;
 import org.dgroup.userservicesmartlogistics.dto.response.ClientProfileResponseDTO;
 import org.dgroup.userservicesmartlogistics.dto.response.DriverProfileResponseDTO;
-import org.dgroup.userservicesmartlogistics.dto.response.UserResponseDTO;
 import org.dgroup.userservicesmartlogistics.mapper.ClientMapper;
 import org.dgroup.userservicesmartlogistics.mapper.DriverMapper;
 import org.dgroup.userservicesmartlogistics.model.ClientProfile;
 import org.dgroup.userservicesmartlogistics.model.DriverProfile;
 import org.dgroup.userservicesmartlogistics.model.DriverStatus;
-import org.dgroup.userservicesmartlogistics.model.User;
 import org.dgroup.userservicesmartlogistics.service.ManagerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -83,14 +81,14 @@ public class ManagerController {
         return ResponseEntity.ok(driverMapper.toResponseList(driversByStatus));
     }
 
-    @PutMapping("truck-info/{email}")
-    public ResponseEntity<DriverProfileResponseDTO> updateTruckInfo(
-            @PathVariable String email,
-            @RequestBody UpdateDriverTruckInfoRequestDTO dto,
-            Authentication authentication) {
-        DriverProfile updatedTruckInfo = managerService.updateTruckInfo(email, dto, authentication);
-        return ResponseEntity.ok(driverMapper.toResponse(updatedTruckInfo));
-    }
+//    @PutMapping("truck-info/{email}")
+//    public ResponseEntity<DriverProfileResponseDTO> updateTruckInfo(
+//            @PathVariable String email,
+//            @RequestBody UpdateDriverTruckInfoRequestDTO dto,
+//            Authentication authentication) {
+//        DriverProfile updatedTruckInfo = managerService.updateTruckInfo(email, dto, authentication);
+//        return ResponseEntity.ok(driverMapper.toResponse(updatedTruckInfo));
+//    }
 
     @PutMapping("license-number/{email}")
     public ResponseEntity<DriverProfileResponseDTO> updateDriverLicenseNumber(

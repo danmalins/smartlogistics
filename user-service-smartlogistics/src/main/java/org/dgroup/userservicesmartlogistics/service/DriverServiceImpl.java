@@ -9,6 +9,8 @@ import org.dgroup.userservicesmartlogistics.repository.DriverProfileRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -24,7 +26,7 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
-    public DriverProfile updateDriverLocation(Double latitude, Double longitude, Authentication authentication) {
+    public DriverProfile updateDriverLocation(BigDecimal latitude, BigDecimal longitude, Authentication authentication) {
         String email = authentication.getName();
 
         DriverProfile driver = driverProfileRepository.findByUserEmail(email)
@@ -49,10 +51,17 @@ public class DriverServiceImpl implements DriverService {
     }
 
 
-    private void validateCoordinates(Double latitude, Double longitude) {
-        if (latitude < -90 || latitude > 90)
-            throw new RuntimeException("Invalid latitude");
-        if (longitude < -180 || longitude > 180)
-            throw new RuntimeException("Invalid longitude");
+    private void validateCoordinates(BigDecimal latitude, BigDecimal longitude) {
+
+        if (latitude == null || longitude == null)
+            throw new IllegalArgumentException("Coordinates cannot be null");
+
+        if (latitude.compareTo(BigDecimal.valueOf(-90)) < 0
+                || latitude.compareTo(BigDecimal.valueOf(90)) > 0)
+            throw new IllegalArgumentException("Invalid latitude");
+
+        if (longitude.compareTo(BigDecimal.valueOf(-180)) < 0
+                || longitude.compareTo(BigDecimal.valueOf(180)) > 0)
+            throw new IllegalArgumentException("Invalid longitude");
     }
 }

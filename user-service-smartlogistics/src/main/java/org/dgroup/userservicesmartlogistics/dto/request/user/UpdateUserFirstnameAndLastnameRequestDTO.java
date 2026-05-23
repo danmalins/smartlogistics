@@ -1,4 +1,4 @@
-package org.dgroup.userservicesmartlogistics.dto.request;
+package org.dgroup.userservicesmartlogistics.dto.request.user;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserFirstnameAndLastnameUpdateDTO {
+public class UpdateUserFirstnameAndLastnameRequestDTO {
     String NewFirstname;
     String newLastname;
 }

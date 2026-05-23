@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -28,23 +29,14 @@ public class DriverProfile {
     @Column(nullable = false)
     String driverLicenseNumber;
 
-    @Column(nullable = false)
-    String truckType;
-
-    @Column(nullable = false)
-    Double truckCapacityWeight;
-
-    @Column(nullable = false)
-    Double truckCapacityVolume;
-
     @Enumerated(EnumType.STRING)
     DriverStatus status;
 
     @Column(nullable = false)
-    Double currentLatitude;
+    BigDecimal currentLatitude;
 
     @Column(nullable = false)
-    Double currentLongitude;
+    BigDecimal currentLongitude;
 
     @Column(nullable = false)
     Double rating;
@@ -52,6 +44,13 @@ public class DriverProfile {
     @Column(nullable = false)
     Integer completedDeliveries;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     LocalDateTime createdAt;
+
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "truck_id")
+    private Truck truck;
 }

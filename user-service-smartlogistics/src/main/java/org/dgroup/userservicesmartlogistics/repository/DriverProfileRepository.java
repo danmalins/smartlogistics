@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,8 +37,8 @@ public interface DriverProfileRepository extends JpaRepository<DriverProfile, UU
     LIMIT 10
 """, nativeQuery = true)
     List<DriverProfile> findNearestDrivers(
-            @Param("latitude") Double latitude,
-            @Param("longitude") Double longitude
+            @Param("latitude") BigDecimal latitude,
+            @Param("longitude") BigDecimal longitude
     );
     List<DriverProfile> findByRating (Double rating);
 

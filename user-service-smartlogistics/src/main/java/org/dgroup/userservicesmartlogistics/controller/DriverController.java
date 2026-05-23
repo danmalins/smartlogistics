@@ -1,8 +1,8 @@
 package org.dgroup.userservicesmartlogistics.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.dgroup.userservicesmartlogistics.dto.request.UpdateDriverLocationRequestDTO;
-import org.dgroup.userservicesmartlogistics.dto.request.UpdateDriverStatusRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.request.driver.UpdateDriverLocationRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.request.driver.UpdateDriverStatusRequestDTO;
 import org.dgroup.userservicesmartlogistics.dto.response.DriverProfileResponseDTO;
 import org.dgroup.userservicesmartlogistics.mapper.DriverMapper;
 import org.dgroup.userservicesmartlogistics.model.DriverProfile;

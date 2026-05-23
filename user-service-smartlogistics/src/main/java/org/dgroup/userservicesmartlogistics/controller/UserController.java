@@ -1,9 +1,9 @@
 package org.dgroup.userservicesmartlogistics.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.dgroup.userservicesmartlogistics.dto.request.UserFirstnameAndLastnameUpdateDTO;
-import org.dgroup.userservicesmartlogistics.dto.request.UserUpdatePasswordRequestDTO;
-import org.dgroup.userservicesmartlogistics.dto.request.UserUpdatePhoneNumberRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.request.user.UpdateUserFirstnameAndLastnameRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.request.user.UpdateUserPasswordRequestDTO;
+import org.dgroup.userservicesmartlogistics.dto.request.user.UpdateUserPhoneNumberRequestDTO;
 import org.dgroup.userservicesmartlogistics.dto.response.UserResponseDTO;
 import org.dgroup.userservicesmartlogistics.mapper.UserMapper;
 import org.dgroup.userservicesmartlogistics.model.User;
@@ -22,7 +22,7 @@ public class UserController {
     @PutMapping("first-and-last-name/{email}")
     public ResponseEntity<UserResponseDTO> updateUserFirstnameAndLastname(
             @PathVariable String email,
-            @RequestBody UserFirstnameAndLastnameUpdateDTO dto,
+            @RequestBody UpdateUserFirstnameAndLastnameRequestDTO dto,
             Authentication authentication) {
         User updatedUser = userService.updateUserFirstnameAndLastname(email, dto, authentication);
         return ResponseEntity.ok(userMapper.toResponse(updatedUser));
@@ -31,7 +31,7 @@ public class UserController {
     @PutMapping("password/{email}")
     public ResponseEntity<UserResponseDTO> updateUserPassword(
             @PathVariable String email,
-            @RequestBody UserUpdatePasswordRequestDTO dto,
+            @RequestBody UpdateUserPasswordRequestDTO dto,
             Authentication authentication) {
         User updatedUser = userService.updateUserPassword(email, dto, authentication);
         return ResponseEntity.ok(userMapper.toResponse(updatedUser));
@@ -40,7 +40,7 @@ public class UserController {
     @PutMapping("phone/{email}")
     public ResponseEntity<UserResponseDTO> updateUserPhoneNumber(
             @PathVariable String email,
-            @RequestBody UserUpdatePhoneNumberRequestDTO dto,
+            @RequestBody UpdateUserPhoneNumberRequestDTO dto,
             Authentication authentication) {
         User updatedUser = userService.updateUserPhoneNumber(email, dto, authentication);
         return ResponseEntity.ok(userMapper.toResponse(updatedUser));

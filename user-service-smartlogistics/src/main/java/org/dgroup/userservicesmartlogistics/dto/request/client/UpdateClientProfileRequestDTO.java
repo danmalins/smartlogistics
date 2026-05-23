@@ -1,4 +1,4 @@
-package org.dgroup.userservicesmartlogistics.dto.request;
+package org.dgroup.userservicesmartlogistics.dto.request.client;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
